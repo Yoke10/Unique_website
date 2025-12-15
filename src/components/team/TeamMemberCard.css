@@ -1,0 +1,128 @@
+.team-member-card {
+    width: 100%;
+    /* background: white; - Moved to ::after */
+    border-radius: 30px;
+    /* overflow: hidden; - Removed to show shadow */
+    position: relative;
+    transition: transform 0.3s ease;
+    text-align: center;
+    padding-bottom: 1.5rem;
+    background: transparent;
+    z-index: 1;
+    /* Establish stacking context */
+    padding: 1.5rem;
+    /* Add padding so image is "inside" */
+}
+
+/* White background */
+.team-member-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    border-radius: 30px;
+    z-index: -1;
+}
+
+/* Gradient Shadow */
+.team-member-card::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: var(--gradient-primary);
+    border-radius: 30px;
+    filter: blur(20px);
+    opacity: 0.25;
+    /* Light shadow */
+    z-index: -2;
+    transition: all 0.3s ease;
+}
+
+.team-member-card:hover {
+    transform: translateY(-10px);
+}
+
+.team-member-card:hover::before {
+    opacity: 0.4;
+    filter: blur(25px);
+    top: 25px;
+    /* Move shadow down slightly on hover for depth */
+}
+
+.team-member-card .member-image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 20px;
+    /* Rounded square image */
+    margin-bottom: 1rem;
+    box-shadow: 0 5px 15px rgba(64, 7, 99, 0.1);
+}
+
+.team-member-card .member-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-member-card .member-image-container:hover .member-image {
+    transform: scale(1.1);
+}
+
+.team-member-card .member-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(64, 7, 99, 0.9) 0%, rgba(237, 7, 117, 0.9) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.team-member-card .member-image-container:hover .member-overlay {
+    opacity: 1;
+}
+
+.team-member-card .member-message {
+    color: white;
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.4;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.team-member-card .member-image-container:hover .member-message {
+    transform: translateY(0);
+}
+
+.team-member-card .member-info {
+    margin-top: 0.5rem;
+}
+
+.team-member-card .member-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-magenta);
+    margin-bottom: 0.3rem;
+}
+
+.team-member-card .member-role {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-pink);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+}

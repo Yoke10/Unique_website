@@ -1,0 +1,207 @@
+/* --------- FAQ Grid Page ---------- */
+.faq-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: var(--spacing-xl) 0;
+    background: var(--off-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.faq-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    /* grid-template-columns: repeat(5, 1fr); */
+    /* Adjusted to be more responsive and better for text content */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+    position: relative;
+}
+
+/* Original Grid Areas were very specific to a 5x4 grid. 
+   For a generic FAQ, a responsive masonry-like or flexible grid is often better.
+   However, to respect the "Hover Card Animation" layout requested, 
+   we will try to maintain the specific grid-area look for the "feature" items 
+   if possible, or adapt it to be a flexible grid of cards.
+   
+   Given the user asked to "convert" it, I will stick to a similar feel 
+   but make it usable for variable content length.
+*/
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+    gap: 20px;
+}
+
+/* Card Styling */
+.faq-card {
+    padding: var(--spacing-md);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    /* Border will be set by specific accent classes */
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Align text to bottom like original */
+    align-items: flex-start;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    transition-property: background, transform, color, opacity, box-shadow, border-color;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+}
+
+.faq-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-purple);
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.faq-card p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--dark-gray);
+    /* Hide by default */
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Hover Effects */
+.faq-card:hover,
+.faq-card:focus {
+    z-index: 10;
+    transform: scale(1.05);
+    /* Slightly less dramatic scale for readability */
+    box-shadow: var(--shadow-xl);
+    background: var(--white);
+    /* Keep background white usually, or change for effect */
+    border-color: transparent;
+    /* Remove border on hover */
+}
+
+/* Show content on hover */
+.faq-card:hover p,
+.faq-card:focus p {
+    opacity: 1;
+    max-height: 200px;
+    /* Arbitrary large height to reveal content */
+    margin-top: 0.5rem;
+    /* Add spacing when revealed */
+}
+
+/* Specific Card Colors on Hover (Adapting original idea) */
+.faq-card.accent-pink:hover {
+    background: var(--primary-pink);
+    color: var(--white);
+}
+
+.faq-card.accent-purple:hover {
+    background: var(--primary-purple);
+    color: var(--white);
+}
+
+.faq-card.accent-magenta:hover {
+    background: var(--primary-magenta);
+    color: var(--white);
+}
+
+/* Change text color on hover for colored backgrounds */
+.faq-card.accent-pink:hover h2,
+.faq-card.accent-purple:hover h2,
+.faq-card.accent-magenta:hover h2,
+.faq-card.accent-pink:hover p,
+.faq-card.accent-purple:hover p,
+.faq-card.accent-magenta:hover p {
+    color: var(--white);
+}
+
+/* Decorative Pseudo-elements */
+.faq-card::before,
+.faq-card::after {
+    content: "";
+    position: absolute;
+    border-radius: var(--radius-md);
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    opacity: 0;
+}
+
+.faq-card:hover::after {
+    opacity: 1;
+    box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.15);
+    /* Softer shadow */
+}
+
+/* Grid Positioning (Mimicking the "Artistic" layout for the first few items) */
+.faq-item-1 {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: var(--off-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.faq-item-1 h1 {
+    font-size: 2.5rem;
+    color: var(--primary-purple);
+    margin-bottom: 1rem;
+}
+
+/* Base border colors for accents */
+.faq-card.accent-pink {
+    border-color: var(--primary-pink);
+}
+
+.faq-card.accent-purple {
+    border-color: var(--primary-purple);
+}
+
+.faq-card.accent-magenta {
+    border-color: var(--primary-magenta);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .faq-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .faq-item-1 {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .faq-item-1 {
+        grid-column: span 1;
+        grid-row: auto;
+    }
+
+    .faq-card {
+        min-height: 200px;
+        /* Ensure strictly visible on mobile */
+    }
+}

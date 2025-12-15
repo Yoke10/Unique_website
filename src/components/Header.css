@@ -1,0 +1,313 @@
+/* ======================================================
+   HEADER BASE STYLE (USED WHEN SCROLLED OR OTHER PAGES)
+====================================================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.8rem 0;
+    z-index: 1000;
+
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    transition: all 0.3s ease;
+}
+
+/* SCROLLED MODE (Same as base, but you can style separately if needed) */
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ======================================================
+   HERO MODE (WHEN HEADER IS OVER HERO SECTION)
+====================================================== */
+
+.header.on-hero {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-bottom: none !important;
+}
+
+/* -- NAV LINKS WHITE IN HERO MODE -- */
+.header.on-hero .nav-link {
+    color: white !important;
+}
+
+.header.on-hero .nav-link::after {
+    background: white !important;
+}
+
+.header.on-hero .nav-link:hover {
+    color: #ff3c8f !important;
+}
+
+/* -- LOGO TEXT TURNS WHITE IN HERO MODE -- */
+.header.on-hero .logo-main,
+.header.on-hero .logo-sub {
+    color: white !important;
+}
+
+/* -- Join Button Turns Outline-White in Hero Mode -- */
+.header.on-hero .btn-join {
+    background: transparent !important;
+    border: 2px solid white !important;
+    color: white !important;
+}
+
+.header.on-hero .btn-join:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+
+
+/* ======================================================
+   HEADER CONTAINER
+====================================================== */
+.header .header-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* ======================================================
+   LOGO
+====================================================== */
+.header .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+}
+
+.header .logo-circle {
+    background: var(--gradient-primary);
+    padding: 12px 16px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+}
+
+.header .logo-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.header .logo-main {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #6d28d9;
+}
+
+.header .logo-sub {
+    font-size: 0.8rem;
+    color: #ec4899;
+    font-weight: 600;
+}
+
+
+/* ======================================================
+   NAVIGATION LINKS
+====================================================== */
+.header .nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header .nav-link {
+    position: relative;
+    text-decoration: none;
+    font-weight: 500;
+    color: #222;
+    padding: 4px 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Underline Animation */
+.header .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.header .nav-link:hover {
+    color: var(--primary-magenta);
+}
+
+.header .nav-link:hover::after {
+    width: 100%;
+}
+
+
+/* ======================================================
+   DROPDOWN MENU
+====================================================== */
+.header .nav-dropdown {
+    position: relative;
+}
+
+.header .dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #222;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+/* Dropdown Icon Animation */
+.header .dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+/* Dropdown Container */
+.header .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 0.5rem 0;
+    min-width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    display: none;
+    animation: fadeIn 0.25s ease;
+}
+
+.header .dropdown-menu.show {
+    display: block;
+}
+
+/* Dropdown Items */
+.header .dropdown-item {
+    position: relative;
+    display: block;
+    padding: 0.7rem 1rem;
+    margin: 2px 6px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.25s ease;
+}
+
+/* Hover underline */
+.header .dropdown-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 4px;
+    width: 0%;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.header .dropdown-item:hover {
+    color: #111;
+}
+
+.header .dropdown-item:hover::after {
+    width: 100%;
+}
+
+
+/* ======================================================
+   JOIN BUTTON
+====================================================== */
+.header .btn-join {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: var(--gradient-primary);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.header .btn-join:hover {
+    opacity: 0.8;
+}
+
+
+/* ======================================================
+   MOBILE MENU
+====================================================== */
+.header .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+}
+
+.header .mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: #6d28d9;
+    border-radius: 3px;
+}
+
+@media (max-width: 968px) {
+    .header .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .header .nav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.9);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 1.5rem;
+        transform: translateY(-120%);
+        transition: 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .header .nav.mobile-open {
+        transform: translateY(0);
+    }
+
+    .header .dropdown-menu {
+        position: static;
+        box-shadow: none;
+    }
+}
+
+
+/* Fade Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

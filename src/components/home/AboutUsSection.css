@@ -1,0 +1,131 @@
+.about-section {
+    background: var(--off-white);
+}
+
+.about-section .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+
+.about-section .about-content {
+    animation: slideInLeft 0.8s ease;
+    padding-right: var(--spacing-md);
+}
+
+.about-section .about-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    display: inline-block;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-section .about-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 40%;
+    height: 6px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+}
+
+.about-section .about-text {
+    font-size: 1.15rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--dark-gray);
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.about-section .about-content .btn {
+    margin-top: var(--spacing-md);
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+/* 3D Image Effect */
+.about-section .about-image-container {
+    perspective: 1000px;
+    animation: slideInRight 0.8s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-section .image-3d-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    /* Faster transition for mouse follow */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    max-width: 100%;
+    will-change: transform;
+}
+
+/* Remove CSS hover transform as it conflicts with JS */
+.about-section .image-3d-wrapper:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.about-section .image-3d-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.about-section .image-3d-wrapper:hover::before {
+    opacity: 1;
+}
+
+.about-section .image-placeholder {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+}
+
+.about-section .about-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-lg);
+}
+
+
+/* Responsive */
+@media (max-width: 968px) {
+    .about-section .about-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .about-section .about-image-container {
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-section .about-title::after {
+        width: 80%;
+    }
+}

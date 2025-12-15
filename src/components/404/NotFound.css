@@ -1,0 +1,93 @@
+/* Importing Font from style.css */
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900&display=swap");
+
+/* Full Screen Overlay Container (Kept from previous implementation) */
+.not-found-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    /* Ensure on top of everything */
+    background-color: #2d0447;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Reset/Base Styles from style.css adapted for the container */
+.not-found-container {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    /* background-color: #2d0447; Already set above */
+}
+
+/* SVG Styling from style.css */
+#yetiSVG {
+    width: 600px;
+    height: 470px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background-color: transparent !important;
+}
+
+#lightSVG {
+    width: 600px;
+    height: 470px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: visible;
+}
+
+/* Content Styling from style.css */
+.content {
+    padding: 5rem 3rem 0 25rem;
+    position: relative;
+    z-index: 10;
+    font-family: "Source Sans Pro", sans-serif;
+    color: #FFF;
+}
+
+.content h3 {
+    margin: 0 0 0.8rem;
+    font-size: 2.625rem;
+    font-weight: 900;
+    line-height: 120%;
+    color: #ff1a8c;
+    /* Vibrant Pink */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.content p {
+    font-size: 1.25rem;
+    font-weight: normal;
+    line-height: 150%;
+    color: #e2c0ff;
+    /* Light Lavender */
+}
+
+.content p span {
+    text-decoration: line-through;
+}
+
+/* Responsive adjustments to keep it centered on smaller screens (Optional, but good practice if not specified in style.css) */
+@media (max-width: 900px) {
+
+    #yetiSVG,
+    #lightSVG {
+        width: 100%;
+        height: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .content {
+        padding: 20rem 1rem 0 1rem;
+        text-align: center;
+    }
+}

@@ -1,0 +1,400 @@
+/* =========================
+   ROOT & BASE
+========================= */
+:root {
+    --primary-purple: #400763;
+    --primary-pink: #ed0775;
+    --accent-light-purple: #5a0a8a;
+    --white: #ffffff;
+    --dark-gray: #1f2937;
+    --gray: #6b7280;
+    --light-bg: #f6f7fb;
+    --radius-md: 18px;
+    --font-primary: 'Inter', system-ui, sans-serif;
+}
+
+/* =========================
+   PAGE CENTERING
+========================= */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-bg);
+}
+
+/* =========================
+   LOGIN CONTAINER
+========================= */
+.login-container {
+    position: relative;
+    width: 900px;
+    height: 550px;
+    background: var(--white);
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+    font-family: var(--font-primary);
+}
+
+/* =========================
+   FORM BOX COMMON
+========================= */
+.login-container .form-box {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 60px;
+}
+
+/* =========================
+   MEMBER FORM (LEFT)
+========================= */
+/* =========================
+   MEMBER FORM (LEFT)
+========================= */
+.form-box.Member {
+    left: 0;
+    pointer-events: all;
+    transition: 0.7s ease;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.login-container.active .form-box.Member {
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-100%);
+    /* Move safely off screen */
+}
+
+/* MEMBER ANIMATION */
+.form-box.Member .animation {
+    transform: translateX(0);
+    opacity: 1;
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--S, 0));
+    /* Added fallback */
+}
+
+.login-container.active .form-box.Member .animation {
+    transform: translateX(-120%);
+    opacity: 0;
+    transition-delay: calc(0.1s * var(--D, 0));
+}
+
+/* =========================
+   ADMIN FORM (RIGHT)
+========================= */
+.form-box.Admin {
+    right: 0;
+    pointer-events: none;
+    transition: 0.7s ease;
+    opacity: 0;
+    /* Hidden by default */
+    transform: translateX(100%);
+    /* Off screen by default */
+}
+
+.login-container.active .form-box.Admin {
+    pointer-events: all;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ADMIN ANIMATION */
+.form-box.Admin .animation {
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(0.1s * var(--S, 0));
+}
+
+.login-container.active .form-box.Admin .animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(0.1s * var(--li, 0));
+}
+
+/* =========================
+   HEADINGS
+========================= */
+.form-box h2 {
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-purple);
+}
+
+.form-box.Admin h2 {
+    color: var(--white);
+}
+
+/* =========================
+   INPUT FIELDS
+========================= */
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 52px;
+    margin-top: 24px;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--dark-gray);
+    border-bottom: 2px solid #d1d5db;
+    font-family: var(--font-primary);
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--gray);
+    pointer-events: none;
+    transition: 0.4s ease;
+}
+
+/* FLOAT LABEL */
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -6px;
+    font-size: 12px;
+    color: var(--primary-pink);
+}
+
+.input-box input:focus,
+.input-box input:valid {
+    border-bottom-color: var(--primary-pink);
+}
+
+/* ADMIN INPUT CONTRAST */
+.form-box.Admin input {
+    color: var(--white);
+    border-bottom-color: rgba(255, 255, 255, 0.6);
+}
+
+.form-box.Admin label {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.form-box.Admin input:focus,
+.form-box.Admin input:valid {
+    border-bottom-color: var(--white);
+}
+
+/* PASSWORD TOGGLE ICON */
+.password-toggle-icon {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--gray);
+    z-index: 10;
+    display: flex;
+    /* Fix alignment */
+}
+
+/* Toggle hover effect */
+.password-toggle-icon:hover {
+    color: var(--primary-pink);
+}
+
+/* White icon for admin panel */
+.form-box.Admin .password-toggle-icon {
+    color: var(--white);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn {
+    width: 100%;
+    height: 46px;
+    margin-top: 32px;
+    border-radius: 30px;
+    border: none;
+    background: var(--primary-pink);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 6px 18px rgba(237, 7, 117, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(237, 7, 117, 0.6);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ADMIN BUTTON - Uses default inherited styles (Pink bg, White text) */
+
+/* =========================
+   SWITCH LINKS
+========================= */
+.regi-link {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.regi-link span {
+    color: var(--primary-pink);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-box.Admin .regi-link span {
+    color: var(--white);
+    text-decoration: none;
+    /* No underline */
+    font-weight: 600;
+}
+
+.form-box.Admin .regi-link span:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   INFO CONTENT PANELS
+========================= */
+.info-content {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.info-content h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.info-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--white);
+}
+
+/* MEMBER INFO */
+.info-content.Member {
+    right: 0;
+    padding: 0 40px 60px 230px;
+    /* Shifted significantly right */
+}
+
+.login-container.active .info-content.Member {
+    opacity: 0;
+}
+
+/* ADMIN INFO */
+.info-content.Admin {
+    left: 0;
+    padding: 0 150px 60px 60px;
+    opacity: 0;
+}
+
+.login-container.active .info-content.Admin {
+    opacity: 1;
+}
+
+/* =========================
+   CURVED SHAPES (UNCHANGED)
+========================= */
+.curved-shape {
+    position: absolute;
+    right: 0;
+    top: -5px;
+    height: 700px;
+    width: 1000px;
+    background: linear-gradient(45deg,
+            var(--accent-light-purple),
+            var(--primary-pink));
+    transform: rotate(10deg) skewY(40deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+}
+
+.login-container.active .curved-shape {
+    transform: rotate(0deg) skewY(0deg);
+}
+
+.curved-shape2 {
+    position: absolute;
+    left: 250px;
+    top: 100%;
+    height: 800px;
+    width: 1000px;
+    background: var(--accent-light-purple);
+    border-top: 3px solid var(--primary-pink);
+    transform-origin: bottom left;
+    transition: 1.5s ease;
+}
+
+.login-container.active .curved-shape2 {
+    transform: rotate(-11deg) skewY(-41deg);
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 950px) {
+    .login-container {
+        width: 95%;
+        height: auto;
+        min-height: 650px;
+    }
+
+    .curved-shape,
+    .curved-shape2,
+    .info-content {
+        display: none;
+    }
+
+    .form-box {
+        width: 100%;
+        position: relative;
+        padding: 40px;
+    }
+
+    .form-box.Admin {
+        display: none;
+    }
+
+    .login-container.active .form-box.Member {
+        display: none;
+    }
+
+    .login-container.active .form-box.Admin {
+        display: flex;
+    }
+}

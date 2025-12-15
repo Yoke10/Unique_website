@@ -1,0 +1,117 @@
+/* Base Styles */
+.confetti-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.confetti-btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Variants */
+.confetti-btn-default {
+    background-color: var(--primary-purple, #400763);
+    color: white;
+    border-radius: 8px;
+}
+
+.confetti-btn-default:hover {
+    background-color: var(--primary-magenta, #680b56);
+}
+
+.confetti-btn-gradient {
+    background: var(--gradient-primary, linear-gradient(135deg, #400763 0%, #ed0775 100%));
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(237, 7, 117, 0.3);
+}
+
+.confetti-btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(237, 7, 117, 0.4);
+    opacity: 0.95;
+}
+
+.confetti-btn-outline {
+    background: transparent;
+    border: 2px solid currentColor;
+    color: var(--primary-purple, #400763);
+    border-radius: 8px;
+}
+
+.confetti-btn-outline:hover {
+    background: rgba(64, 7, 99, 0.05);
+}
+
+.confetti-btn-ghost {
+    background: transparent;
+    color: var(--primary-purple, #400763);
+}
+
+.confetti-btn-ghost:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Sizes */
+.confetti-btn-sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+
+.confetti-btn-default {
+    height: 40px;
+    /* reuse name but logic implies size default */
+    padding: 0 16px;
+    font-size: 1rem;
+}
+
+.confetti-btn-lg {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 1.125rem;
+}
+
+.confetti-btn-pill {
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+}
+
+/* Spinner */
+.confetti-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: confetti-spin 0.75s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes confetti-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Icon spacing */
+.confetti-icon.left {
+    margin-right: 0.25rem;
+}
+
+.confetti-icon.right {
+    margin-left: 0.25rem;
+}

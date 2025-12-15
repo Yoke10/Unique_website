@@ -1,0 +1,181 @@
+/* Toast.css */
+:root {
+    --toast-bg-default: #ffffff;
+    --toast-text-default: #09090b;
+    /* foreground */
+    --toast-border-default: #e4e4e7;
+
+    --toast-bg-destructive: #fef2f2;
+    --toast-text-destructive: #991b1b;
+    --toast-border-destructive: #ef4444;
+
+    --toast-bg-success: #f0fdf4;
+    --toast-text-success: #166534;
+    --toast-border-success: #22c55e;
+
+    --toast-bg-warning: #fefce8;
+    --toast-text-warning: #854d0e;
+    --toast-border-warning: #eab308;
+
+    --toast-bg-info: #eff6ff;
+    --toast-text-info: #1e40af;
+    --toast-border-info: #3b82f6;
+
+    --toast-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.toast-viewport {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    width: auto;
+    max-width: 24rem;
+    /* max-w-sm approx */
+    z-index: 9999;
+    pointer-events: none;
+    /* Let clicks pass through empty space */
+}
+
+.toast {
+    position: relative;
+    width: 20rem;
+    /* w-80 approx */
+    max-width: 100%;
+    padding: 1rem 2rem 1rem 1rem;
+    /* pr-8 for close button */
+    border-radius: 6px;
+    border: 1px solid;
+    box-shadow: var(--toast-shadow);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    overflow: hidden;
+    pointer-events: auto;
+    /* Re-enable pointer events for the toast itself */
+    animation: toast-slide-in 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+}
+
+.toast[data-state='closed'] {
+    animation: toast-fade-out 0.15s ease-out forwards;
+}
+
+/* Variants */
+.toast-default {
+    background-color: var(--toast-bg-default);
+    color: var(--toast-text-default);
+    border-color: var(--toast-border-default);
+}
+
+.toast-destructive {
+    background-color: var(--toast-bg-destructive);
+    color: var(--toast-text-destructive);
+    border-color: var(--toast-border-destructive);
+}
+
+.toast-success {
+    background-color: var(--toast-bg-success);
+    color: var(--toast-text-success);
+    border-color: var(--toast-border-success);
+}
+
+.toast-warning {
+    background-color: var(--toast-bg-warning);
+    color: var(--toast-text-warning);
+    border-color: var(--toast-border-warning);
+}
+
+.toast-info {
+    background-color: var(--toast-bg-info);
+    color: var(--toast-text-info);
+    border-color: var(--toast-border-info);
+}
+
+/* Content */
+.toast-content {
+    width: 100%;
+}
+
+.toast-title {
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.toast-description {
+    font-size: 0.875rem;
+    /* text-sm */
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* Close Button */
+.toast-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-close:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Progress Bar */
+.toast-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Track */
+}
+
+.toast-progress-indicator {
+    height: 100%;
+    background-color: currentColor;
+    /* Inherit text color for simplicity, or specific vars */
+    opacity: 0.3;
+    transition: width 0.1s linear;
+}
+
+/* Animations */
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toast-fade-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}

@@ -1,0 +1,44 @@
+.glowing-card {
+    position: relative;
+    flex: 1;
+    min-width: 14rem;
+    border-radius: 1rem;
+    transition: all 400ms ease-out;
+    /* Basic styling that was in Tailwind classes */
+    background-color: transparent;
+    /* We let the passed specific classes handle the main background, 
+     but for the glow effect to work, the "glow" version needs transparent or specific bg. 
+     The main card likely needs a background. */
+}
+
+.glowing-cards-main {
+    position: relative;
+    width: 100%;
+}
+
+.glowing-cards-inner {
+    position: relative;
+    margin: 0 auto;
+    /* padding handled by inline style var(--padding) */
+}
+
+.glowing-cards-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--gap);
+}
+
+.glowing-cards-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transition: opacity var(--animation-duration) ease-out;
+    /* Mask handled by inline style */
+}

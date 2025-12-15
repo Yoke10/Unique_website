@@ -1,0 +1,219 @@
+/* Section */
+.prayer-test-section {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-magenta) 100%);
+    /* Dark purple theme background */
+    padding: 4rem 0;
+    font-family: var(--font-primary);
+}
+
+/* Ensure container inside section behaves like flex container for cards */
+.prayer-test-section .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.prayer-test-section .section-main-title {
+    width: 100%;
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 3rem;
+    font-family: var(--font-display);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.prayer-test-section .box {
+    position: relative;
+    width: 500px;
+    /* Increased to prevent text wrap */
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 30px;
+    /* Maintains 60px gap between cards */
+    transition: var(--transition-slow);
+}
+
+.prayer-test-section .box::before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 50%;
+    height: 100%;
+    text-decoration: none;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    transform: skewX(15deg);
+    transition: var(--transition-slow);
+}
+
+.prayer-test-section .box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 50%;
+    height: 100%;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    transform: skewX(15deg);
+    transition: var(--transition-slow);
+    filter: blur(30px);
+}
+
+.prayer-test-section .box:hover:before,
+.prayer-test-section .box:hover:after {
+    transform: skewX(0deg);
+    left: 20px;
+    width: calc(100% - 90px);
+}
+
+/* First Card - Primary Gradient (Purple/Pink) */
+.prayer-test-section .box:nth-child(1):before,
+.prayer-test-section .box:nth-child(1):after {
+    background: linear-gradient(315deg, var(--accent-light-pink), var(--accent-dark-purple));
+}
+
+/* Second Card - Accent Gradient (Light Pink/Dark Purple) */
+.prayer-test-section .box:nth-child(2):before,
+.prayer-test-section .box:nth-child(2):after {
+    background: linear-gradient(315deg, var(--accent-light-pink), var(--accent-dark-purple));
+}
+
+.prayer-test-section .box span {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.prayer-test-section .box span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: 0.1s;
+    animation: prayerCardAnimate 2s ease-in-out infinite;
+    box-shadow: var(--shadow-md);
+}
+
+.prayer-test-section .box:hover span::before {
+    top: -50px;
+    left: 50px;
+    width: 100px;
+    height: 100px;
+    opacity: 1;
+}
+
+.prayer-test-section .box span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: var(--transition-slow);
+    animation: prayerCardAnimate 2s ease-in-out infinite;
+    box-shadow: var(--shadow-md);
+    animation-delay: -1s;
+}
+
+.prayer-test-section .box:hover span:after {
+    bottom: -50px;
+    right: 50px;
+    width: 100px;
+    height: 100px;
+    opacity: 1;
+}
+
+@keyframes prayerCardAnimate {
+
+    0%,
+    100% {
+        transform: translateY(10px);
+    }
+
+    50% {
+        transform: translate(-10px);
+    }
+}
+
+.prayer-test-section .box .content {
+    position: relative;
+    left: 0;
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Keep transparency for glass effect */
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-sm);
+    z-index: 1;
+    transition: var(--transition-slow);
+    color: var(--white);
+    height: auto;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.prayer-test-section .box:hover .content {
+    left: -25px;
+    padding: 60px 40px;
+}
+
+.prayer-test-section .card-title {
+    font-size: 2em;
+    color: var(--white);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-family: var(--font-display);
+    font-weight: 800;
+}
+
+.prayer-test-section .box .content p,
+.prayer-test-section .box .content li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    line-height: 1.4em;
+    font-family: var(--font-primary);
+}
+
+.prayer-test-section .test-list {
+    list-style: none;
+    padding: 0;
+}
+
+.prayer-test-section .test-list li strong {
+    color: var(--primary-pink);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .prayer-test-section .section-main-title {
+        font-size: 1.8rem;
+    }
+
+    .prayer-test-section .box {
+        margin: 60px 0;
+    }
+}

@@ -1,0 +1,108 @@
+.about-hero-section {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-lg) 5%;
+    background: var(--white);
+    overflow: hidden;
+    margin-top: 80px;
+}
+
+.about-hero-section .about-hero-content {
+    flex: 1;
+    z-index: 2;
+    padding-right: 2rem;
+}
+
+.about-hero-section .about-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-hero-section .about-hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--dark-gray);
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.about-hero-section .about-hero-visual {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    perspective: 1000px;
+    gap: 1rem;
+}
+
+.about-hero-section .years-3d-container {
+    position: relative;
+    transform-style: preserve-3d;
+    animation: aboutHeroFloat 6s ease-in-out infinite;
+}
+
+.about-hero-section .years-text-3d {
+    font-size: clamp(8rem, 15vw, 12rem);
+    font-weight: 900;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 10px 20px rgba(64, 7, 99, 0.2));
+    transform: rotateY(-15deg) rotateX(5deg);
+    line-height: 1;
+    position: relative;
+    z-index: 10;
+}
+
+.about-hero-section .years-label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-magenta);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-top: -2rem;
+    position: relative;
+    z-index: 10;
+}
+
+@keyframes aboutHeroFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateY(-15deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotateY(-5deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero-section {
+        flex-direction: column-reverse;
+        text-align: center;
+        justify-content: center;
+        padding-top: 2rem;
+    }
+
+    .about-hero-section .about-hero-content {
+        padding-right: 0;
+        margin-top: 2rem;
+    }
+
+    .about-hero-section .years-text-3d {
+        font-size: 6rem;
+    }
+}

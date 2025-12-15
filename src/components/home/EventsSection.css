@@ -1,0 +1,249 @@
+.events-section {
+    background: var(--off-white);
+    padding: var(--spacing-xl) 0;
+    position: relative;
+}
+
+.events-section .events-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.events-section .events-scroll {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: var(--spacing-md) var(--spacing-sm);
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    width: 100%;
+}
+
+.events-section .events-scroll::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Landscape Event Card - Matching EventCard.css */
+.events-section .event-card {
+    flex: 0 0 750px;
+    /* Wider for landscape layout */
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* Soft shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    /* Landscape layout */
+    max-height: 350px;
+    min-height: 250px;
+    margin-bottom: 5px;
+    /* Tiny margin to prevent shadow cut-off if any */
+}
+
+.events-section .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Panel - Image */
+.events-section .event-left {
+    width: 280px;
+    /* Fixed width */
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.events-section .event-illustration {
+    width: 100%;
+    height: 100%;
+}
+
+.events-section .event-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.events-section .event-card:hover .event-illustration img {
+    transform: scale(1.05);
+}
+
+.events-section .event-illustration svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Center Panel - Content */
+.events-section .event-main {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 2px dashed var(--primary-pink);
+    /* Divider */
+}
+
+.events-section .event-category {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(237, 7, 117, 0.1);
+    /* Primary pink tint */
+    color: var(--primary-pink);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.events-section .event-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-magenta);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.events-section .event-description {
+    font-size: 1rem;
+    color: var(--dark-gray);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Limit text in landscape */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Right Panel - Date */
+/* Note: In JSX, date-panel is a sibling. Styles position it as the right panel. */
+.events-section .event-date-panel {
+    position: static;
+    /* Not absolute */
+    width: 140px;
+    background: transparent;
+    box-shadow: none;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.events-section .date-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary-magenta);
+    line-height: 1;
+    display: block;
+}
+
+.events-section .date-month {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-pink);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Scroll Buttons */
+.events-section .scroll-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--white);
+    border: none;
+    box-shadow: var(--shadow-md);
+    color: var(--primary-purple);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.events-section .scroll-btn:hover {
+    background: var(--primary-purple);
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.events-section .scroll-left {
+    margin-right: -25px;
+}
+
+.events-section .scroll-right {
+    margin-left: -25px;
+}
+
+/* View All Card Removed */
+
+/* Responsive */
+@media (max-width: 900px) {
+    .events-section .event-card {
+        flex: 0 0 320px;
+        /* Stack on mobile */
+        flex-direction: column;
+        /* Vertical layout */
+        min-height: auto;
+    }
+
+    .events-section .event-left {
+        width: 100%;
+        height: 200px;
+    }
+
+    .events-section .event-main {
+        border-right: none;
+        border-bottom: 2px dashed #eee;
+        padding: 1.5rem;
+    }
+
+    .events-section .event-date-panel {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        background: #fcfcfc;
+    }
+
+    .events-section .event-date {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+    }
+
+    .events-section .date-number {
+        font-size: 2rem;
+    }
+
+    .events-section .scroll-btn {
+        display: none;
+    }
+
+    .events-section .events-scroll {
+        padding: var(--spacing-sm);
+        gap: 1rem;
+    }
+}

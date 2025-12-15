@@ -1,0 +1,60 @@
+.about-join-section {
+    padding: var(--spacing-xl) 5%;
+    text-align: center;
+    background: var(--gradient-primary);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-join-section .about-join-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-join-section .about-join-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.about-join-section .about-join-text {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.about-join-section .about-join-btn {
+    display: inline-block;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-magenta);
+    background: white;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.about-join-section .about-join-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Background decoration */
+.about-join-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="90" r="10" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="20" fill="rgba(255,255,255,0.05)"/></svg>') center/cover;
+    z-index: 1;
+}

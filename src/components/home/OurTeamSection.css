@@ -1,0 +1,42 @@
+.team-section {
+    background: var(--off-white);
+}
+
+/* Grid Layout - Matches TeamGridSection */
+.team-section .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    padding: var(--spacing-sm) 0 var(--spacing-md);
+    justify-content: center;
+    max-width: 1000px;
+    /* Limit width to keep 3 cards centered well */
+    margin: 0 auto;
+}
+
+/* Card overrides for Home Page - Add Gradient Shadow */
+.team-section .team-member-card {
+    box-shadow: 0 10px 30px rgba(64, 7, 99, 0.15);
+    /* Purple tint base */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-section .team-member-card:hover {
+    transform: translateY(-8px);
+    /* Simulated gradient shadow using color and blur */
+    box-shadow: 0 20px 50px rgba(237, 7, 117, 0.25), 0 10px 20px rgba(64, 7, 99, 0.2);
+}
+
+/* View More Button Container */
+.team-section .team-view-more {
+    text-align: center;
+    margin-top: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .team-section .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+}

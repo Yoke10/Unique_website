@@ -1,0 +1,117 @@
+/* Overlay Background */
+.alert-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+/* Modal Content */
+.alert-dialog-content {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 2001;
+    display: grid;
+    width: 100%;
+    max-width: 32rem;
+    /* max-w-lg */
+    transform: translate(-50%, -50%);
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--white);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-xl);
+    border-radius: var(--radius-lg);
+}
+
+@media (min-width: 640px) {
+    .alert-dialog-content {
+        border-radius: var(--radius-md);
+    }
+}
+
+/* Header */
+.alert-dialog-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .alert-dialog-header {
+        text-align: left;
+    }
+}
+
+/* Footer */
+.alert-dialog-footer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .alert-dialog-footer {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}
+
+/* Title */
+.alert-dialog-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary-purple);
+    font-family: var(--font-display);
+    margin: 0;
+}
+
+/* Description */
+.alert-dialog-description {
+    font-size: 0.875rem;
+    color: var(--gray);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Buttons Base */
+.alert-dialog-action,
+.alert-dialog-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border: none;
+    outline: none;
+}
+
+/* Action Button (Confirm) */
+.alert-dialog-action {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.alert-dialog-action:hover {
+    opacity: 0.9;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Cancel Button */
+.alert-dialog-cancel {
+    background-color: transparent;
+    border: 1px solid var(--light-gray);
+    color: var(--dark-gray);
+}
+
+.alert-dialog-cancel:hover {
+    background-color: var(--off-white);
+    color: var(--black);
+}

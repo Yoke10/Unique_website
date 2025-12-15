@@ -1,0 +1,196 @@
+.stats-section {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-magenta) 100%);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-xl) 0;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(237, 7, 117, 0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: statsFloat 6s ease-in-out infinite;
+}
+
+.stats-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(237, 7, 117, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: statsFloat 8s ease-in-out infinite reverse;
+}
+
+.stats-section .section-title {
+    color: var(--white);
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 4rem;
+}
+
+.stats-section .section-title::after {
+    background: var(--white);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.stats-section .stats-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    /* Force single line */
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    /* Use full container width */
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.stats-section .stat-card {
+    flex: 1 1 0;
+    /* Distribute equal space */
+    width: 100%;
+    /* Ensure it fills flex space */
+    min-width: 0;
+    /* Allow shrinking below content size if needed */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem 1rem;
+    /* Reduced horizontal padding */
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27),
+        box-shadow 0.4s ease,
+        border-color 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Animation triggered by IntersectionObserver in JSX */
+.stats-section .stat-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stats-section .stat-card.animate:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.stats-section .stat-card.animate:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.stats-section .stat-card.animate:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+.stats-section .stat-card.animate:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+.stats-section .stat-card.animate:nth-child(5) {
+    transition-delay: 0.5s;
+}
+
+.stats-section .stat-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+        0 0 15px rgba(237, 7, 117, 0.2);
+    /* Pink glow */
+}
+
+/* Removed .stat-icon styles as icon is removed */
+
+.stats-section .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    /* Slightly smaller to fit */
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to bottom, #fff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    word-break: normal;
+}
+
+/* Restore text color if background-clip isn't supported or needed */
+@supports (-webkit-background-clip: text) {
+    .stats-section .stat-number {
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+.stats-section .stat-label {
+    font-size: 1rem;
+    /* Slightly smaller */
+    font-weight: 700;
+    color: var(--accent-soft-pink);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    /* Prevent label wrap if possible, or allow control */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stats-section .stat-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Floating animation keyframes if not defined globally */
+@keyframes statsFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Responsive: stack on mobile, but single line on desktop as requested */
+@media (max-width: 900px) {
+    .stats-section .stats-grid {
+        flex-wrap: wrap;
+        /* Allow wrap on tablets/mobile */
+        gap: 1.5rem;
+    }
+
+    .stats-section .stat-card {
+        flex: 1 1 45%;
+        /* 2 per row on tablet */
+        max-width: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-section .stat-card {
+        flex: 1 1 100%;
+        /* 1 per row on mobile */
+    }
+}

@@ -1,0 +1,49 @@
+import React from 'react'
+import TeamMemberCard from './TeamMemberCard'
+import './TeamGridSection.css'
+
+import { mockDataService } from '../../services/mockDataService'
+
+const TeamGridSection = () => {
+    const [members, setMembers] = React.useState([])
+    const [loading, setLoading] = React.useState(true)
+
+    React.useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const data = await mockDataService.getBoardMembers()
+                setMembers(data)
+            } catch (error) {
+                console.error("Failed to fetch team members", error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchMembers()
+    }, [])
+
+    if (loading) return <div style={{ textAlign: 'center', padding: '5rem', fontSize: '1.5rem', color: 'var(--primary-purple)' }}>Loading Team...</div>
+
+    return (
+        <section className="team-grid-section">
+            <h1 className="team-grid-title">Meet Our Team</h1>
+            {members.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>No team members added yet.</div>
+            ) : (
+                <div className="team-grid-container">
+                    {members.map(member => (
+                        <TeamMemberCard
+                            key={member.id}
+                            name={member.name}
+                            role={member.role}
+                            image={member.image}
+                            message={member.message}
+                        />
+                    ))}
+                </div>
+            )}
+        </section>
+    )
+}
+
+export default TeamGridSection

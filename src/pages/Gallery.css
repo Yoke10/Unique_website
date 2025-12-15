@@ -1,0 +1,106 @@
+/* MAIN WRAPPER */
+.gallery-page .gallery-carousel {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* -----------------------------
+   MASONRY GRID SYSTEM
+--------------------------------*/
+.gallery-page .carousel__container {
+    column-count: 5;
+    /* number of columns */
+    column-gap: 20px;
+    /* spacing between columns */
+    width: 100%;
+    padding: 0 1rem;
+}
+
+/* Each card */
+.gallery-page .carousel-item {
+    break-inside: avoid;
+    /* prevents card from breaking across columns */
+    margin-bottom: 20px;
+    background: #f7f7f7;
+    border-radius: 14px;
+    overflow: hidden;
+    /* required for image zoom */
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.25s ease;
+}
+
+/* IMAGE INSIDE CARD */
+.gallery-page .carousel-item__img {
+    width: 100%;
+    height: auto;
+    /* natural height – prevents empty space issues */
+    display: block;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+/* --- FIXED HOVER: Zoom image only, NOT card --- */
+.gallery-page .carousel-item:hover .carousel-item__img {
+    transform: scale(1.06);
+}
+
+.gallery-page .carousel-item:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* -------------------------------
+   TITLE OVERLAY (always consistent)
+--------------------------------*/
+.gallery-page .carousel-item__details {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem 1rem 0.6rem;
+    color: #ffffff;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.85),
+            rgba(0, 0, 0, 0.5),
+            transparent);
+    opacity: 0;
+    transition: opacity .25s ease;
+}
+
+.gallery-page .carousel-item:hover .carousel-item__details {
+    opacity: 1;
+}
+
+.gallery-page .carousel-item__details--title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------
+   RESPONSIVE BREAKPOINTS
+---------------------------------*/
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .gallery-page .carousel__container {
+        column-count: 3;
+    }
+}
+
+/* Mobile landscape */
+@media (max-width: 768px) {
+    .gallery-page .carousel__container {
+        column-count: 2;
+    }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+    .gallery-page .carousel__container {
+        column-count: 1;
+        padding: 0 0.5rem;
+    }
+}

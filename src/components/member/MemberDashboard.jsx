@@ -1,0 +1,268 @@
+import React, { useState, useEffect } from 'react'
+import FirstTimeSetup from './FirstTimeSetup'
+import MemberProfile from './MemberProfile'
+import Resources from './Resources'
+import ReportGenerator from '../reports/ReportGenerator'
+import { mockDataService } from '../../services/mockDataService'
+import './MemberDashboard.css'
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "../ui/AlertDialog/AlertDialog"
+
+const MemberDashboard = ({ user, onLogout }) => {
+    // Default to Directory as Profile is now in modal
+    const [activeTab, setActiveTab] = useState('directory')
+    const [reports, setReports] = useState([])
+    const [viewingReport, setViewingReport] = useState(null)
+    const [currentUser, setCurrentUser] = useState(user)
+    const [alertConfig, setAlertConfig] = useState({ open: false, title: '', description: '', action: null })
+
+    const showAlert = (title, description, action) => {
+        setAlertConfig({ open: true, title, description, action })
+    }
+
+    const handleConfirmAction = () => {
+        if (alertConfig.action) {
+            alertConfig.action()
+        }
+        setAlertConfig({ ...alertConfig, open: false })
+    }
+
+    // Directory & Profile Modal State
+    const [members, setMembers] = useState([])
+    const [showProfileModal, setShowProfileModal] = useState(false)
+    const [selectedMember, setSelectedMember] = useState(null)
+
+    useEffect(() => {
+        loadReports()
+    }, [])
+
+    useEffect(() => {
+        if (activeTab === 'directory') {
+            loadMembers()
+        }
+    }, [activeTab])
+
+    const loadReports = async () => {
+        setReports(await mockDataService.getReports())
+    }
+
+    const loadMembers = async () => {
+        const allUsers = await mockDataService.getUsers()
+        // Filter only members
+        setMembers(allUsers.filter(u => u.role === 'member'))
+    }
+
+    const handleSaveReport = async (reportData) => {
+        const userId = currentUser?.id
+        if (!userId) {
+            alert("Error: User session missing. Please logout and login again.")
+            return
+        }
+
+        if (reportData.id) {
+            await mockDataService.updateReport(reportData.id, reportData)
+        } else {
+            await mockDataService.addReport({ ...reportData, createdBy: userId })
+        }
+        await loadReports()
+        setViewingReport(null)
+        alert("Report Saved Successfully!")
+    }
+
+    const handleUpdateUser = (updatedUser) => {
+        setCurrentUser(updatedUser)
+    }
+
+    return (
+        <div className="member-container">
+            <div className="member-header">
+                <div className="member-nav-group">
+                    <button
+                        onClick={() => setActiveTab('directory')}
+                        className={`member-nav-btn ${activeTab === 'directory' ? 'active' : ''}`}
+                    >
+                        Members
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('reports')}
+                        className={`member-nav-btn ${activeTab === 'reports' ? 'active' : ''}`}
+                    >
+                        Project Reports
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('resources')}
+                        className={`member-nav-btn ${activeTab === 'resources' ? 'active' : ''}`}
+                    >
+                        Resources
+                    </button>
+                </div>
+
+                {/* Profile Icon */}
+                <div
+                    className="member-profile-icon"
+                    onClick={() => setShowProfileModal(true)}
+                    title="View My Details"
+                >
+                    {currentUser.profile?.fullName ? currentUser.profile.fullName.charAt(0).toUpperCase() : 'U'}
+                </div>
+            </div>
+
+            {currentUser.isFirstLogin ? (
+                <FirstTimeSetup user={currentUser} onComplete={handleUpdateUser} />
+            ) : (
+                <>
+                    {activeTab === 'resources' && <Resources />}
+
+                    {activeTab === 'directory' && (
+                        <div className="directory-container">
+                            <h2 style={{ color: 'var(--primary-magenta)', marginBottom: '1.5rem' }}>Member Directory</h2>
+                            <div className="directory-grid">
+                                {members.map(member => (
+                                    <div key={member.id} className="directory-card">
+                                        <div className="dir-avatar">
+                                            {member.profile?.fullName ? member.profile.fullName.charAt(0) : 'M'}
+                                        </div>
+                                        <div className="dir-info">
+                                            <h3>{member.profile?.fullName || member.username}</h3>
+                                            <div className="dir-details">
+                                                <p><strong>Email:</strong> {member.profile?.email || '-'}</p>
+                                                <p><strong>Contact:</strong> {member.profile?.contact || '-'}</p>
+                                            </div>
+                                            <button
+                                                className="view-details-btn"
+                                                onClick={() => setSelectedMember(member)}
+                                            >
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'reports' && (
+                        <div>
+                            {!viewingReport ? (
+                                <div>
+                                    <div className="report-action-bar">
+                                        <button onClick={() => setViewingReport('new')} className="create-report-btn">+ Create New Report</button>
+                                    </div>
+
+                                    <div className="report-grid">
+                                        {reports.filter(r => r.createdBy === currentUser.id).length === 0 && <p className="no-reports-msg">No reports found.</p>}
+                                        {reports.filter(r => r.createdBy === currentUser.id).map(report => (
+                                            <div key={report.id} className="report-item">
+                                                <div>
+                                                    <h4 className="report-title">{report.eventName}</h4>
+                                                    <span className="report-date">{report.eventDate} | {report.avenue}</span>
+                                                </div>
+                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                    <button onClick={() => setViewingReport(report)} className="edit-btn">Edit</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <ReportGenerator
+                                    user={currentUser}
+                                    reportData={viewingReport === 'new' ? null : viewingReport}
+                                    onSave={handleSaveReport}
+                                    onCancel={() => setViewingReport(null)}
+                                />
+                            )}
+                        </div>
+                    )}
+                </>
+            )}
+
+            {/* Profile Modal (My Account) */}
+            {showProfileModal && (
+                <div className="modal-overlay">
+                    <div className="modal-box large" style={{ maxWidth: '1100px', width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
+                        <button onClick={() => setShowProfileModal(false)} className="modal-close-btn">✕</button>
+                        <button onClick={() => showAlert("Logout?", "Are you sure you want to log out?", onLogout)} className="modal-header-logout-btn">
+                            Logout
+                        </button>
+                        <MemberProfile user={currentUser} onUpdate={handleUpdateUser} />
+                    </div>
+                </div>
+            )}
+
+            {selectedMember && (
+                <div className="modal-overlay">
+                    <div className="member-detail-card">
+                        {/* Close button at top right of the whole card */}
+                        <button onClick={() => setSelectedMember(null)} className="modal-close-btn">✕</button>
+
+                        <div className="card-header-gradient">
+                            <div className="card-avatar-large">
+                                {selectedMember.profile?.fullName ? selectedMember.profile.fullName.charAt(0) : 'M'}
+                            </div>
+                            <h2>{selectedMember.profile?.fullName || selectedMember.username}</h2>
+                            <p>RI ID: {selectedMember.profile?.riId || 'N/A'}</p>
+                            <span className="member-badge">Active Member</span>
+                        </div>
+
+                        <div className="card-body">
+                            <h3 style={{ marginBottom: '1.5rem', color: '#333', fontSize: '1.2rem', borderBottom: '2px solid var(--primary-pink)', display: 'inline-block', paddingBottom: '0.5rem' }}>Member Details</h3>
+
+                            <div className="detail-row">
+                                <span className="detail-label">Member ID</span>
+                                <span className="detail-value" style={{ color: 'var(--primary-magenta)' }}>{selectedMember.memberId || '-'}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Email</span>
+                                <span className="detail-value">{selectedMember.profile?.email || '-'}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Contact</span>
+                                <span className="detail-value">{selectedMember.profile?.contact || '-'}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Date of Birth</span>
+                                <span className="detail-value">{selectedMember.profile?.dob || '-'}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Blood Group</span>
+                                <span className="detail-value">{selectedMember.profile?.bloodGroup || '-'}</span>
+                            </div>
+                            <div className="detail-row">
+                                <span className="detail-label">Address</span>
+                                <span className="detail-value" style={{ maxWidth: '100%', textAlign: 'left' }}>
+                                    {selectedMember.profile?.addressLine1}
+                                    {selectedMember.profile?.addressLine2 && <><br />{selectedMember.profile.addressLine2}</>}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ALERT DIALOG */}
+            <AlertDialog open={alertConfig.open} onOpenChange={(open) => setAlertConfig(prev => ({ ...prev, open }))}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{alertConfig.title}</AlertDialogTitle>
+                        <AlertDialogDescription>{alertConfig.description}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleConfirmAction}>Confirm</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </div>
+    )
+}
+
+export default MemberDashboard
