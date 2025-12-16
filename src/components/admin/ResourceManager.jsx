@@ -1,198 +1,134 @@
-import React, { useState, useEffect } from 'react'
-import { mockDataService } from '../../services/mockDataService'
-import { useToast } from '../ui/Toast/ToastContext'
-import {
-    AlertDialog,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogCancel,
-    AlertDialogAction,
-} from "../ui/AlertDialog/AlertDialog"
+import React, { useState, useEffect } from 'react';
+import { Plus, Trash2, Edit, Eye, Link as LinkIcon, FileText, Image } from 'lucide-react';
+import { mockDataService } from '../../services/mockDataService';
+import { useToast } from '../ui/Toast/ToastContext';
+import AdminModal from './common/AdminModal';
+import { AdminInput, AdminSelect, AdminFile } from './common/FormComponents';
+import { fileToBase64, validateFile } from '../../utils/fileHelpers';
+import './layout/AdminLayout.css';
 
 const ResourceManager = () => {
-    const { toast } = useToast()
-    const [resources, setResources] = useState([])
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-    const [newResource, setNewResource] = useState({ name: '', type: 'link', content: '' })
-    const [uploadError, setUploadError] = useState('')
-    const [alertConfig, setAlertConfig] = useState({ open: false, title: '', description: '', action: null })
+    const { toast } = useToast();
+    const [resources, setResources] = useState([]);
+    const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); // For previewing content
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
-    const showAlert = (title, description, action) => {
-        setAlertConfig({ open: true, title, description, action })
-    }
+    const [formData, setFormData] = useState({ name: '', type: 'link', content: '' });
+    const [uploadError, setUploadError] = useState('');
 
-    const handleConfirmAction = () => {
-        if (alertConfig.action) alertConfig.action()
-        setAlertConfig({ ...alertConfig, open: false })
-    }
+    useEffect(() => { load(); }, []);
+    const load = async () => setResources((await mockDataService.getResources()).sort((a, b) => new Date(b.date) - new Date(a.date)));
 
-    useEffect(() => {
-        loadResources()
-    }, [])
+    const handleInputChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const handleTypeChange = (e) => setFormData(prev => ({ ...prev, type: e.target.value, content: '' }));
 
-    const loadResources = async () => {
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) { setUploadError('Max 2MB'); return; }
+
         try {
-            const data = await mockDataService.getResources()
-            setResources(data.sort((a, b) => new Date(b.date) - new Date(a.date)))
-        } catch (error) {
-            console.error("Failed to load resources:", error)
-            toast({ title: "Error", description: "Failed to load resources", variant: "destructive" })
-        }
-    }
+            const base64 = await fileToBase64(file);
+            setFormData(prev => ({ ...prev, content: base64 }));
+            setUploadError('');
+        } catch { setUploadError('Read failed'); }
+    };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0]
-        if (!file) return
+    const openAdd = () => { setFormData({ name: '', type: 'link', content: '' }); setIsEditing(false); setIsFormModalOpen(true); };
+    const openEdit = (item) => { setFormData({ ...item }); setSelectedItem(item); setIsEditing(true); setIsFormModalOpen(true); };
 
-        if (file.size > 2 * 1024 * 1024) { // 2MB limit
-            setUploadError("File is too large! Max 2MB allowed.")
-            toast({ title: "Error", description: "File too large (Max 2MB)", variant: "destructive" })
-            return
-        }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.content) { toast({ title: "Error", description: "Content required", variant: "destructive" }); return; }
 
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setNewResource({ ...newResource, content: reader.result })
-            setUploadError('')
-        }
-        reader.readAsDataURL(file)
-    }
+        try {
+            if (isEditing) await mockDataService.updateResource(selectedItem.id, formData);
+            else await mockDataService.addResource(formData);
+            toast({ title: "Success", variant: "success" });
+            setIsFormModalOpen(false);
+            load();
+        } catch { toast({ title: "Error", variant: "destructive" }); }
+    };
 
-    const handleAdd = async () => {
-        if (!newResource.name || !newResource.content) {
-            toast({ title: "Missing Fields", description: "Please fill all fields", variant: "warning" })
-            return
-        }
-        await mockDataService.addResource(newResource)
-        setNewResource({ name: '', type: 'link', content: '' })
-        setIsAddModalOpen(false)
-        loadResources()
-        toast({ title: "Success", description: "Resource added successfully", variant: "success" })
-    }
+    const handleDelete = async (id) => {
+        if (window.confirm("Delete Resource?")) { await mockDataService.deleteResource(id); load(); }
+    };
 
-    const handleDelete = (id) => {
-        showAlert("Delete Resource?", "Are you sure you want to delete this resource?", async () => {
-            await mockDataService.deleteResource(id)
-            loadResources()
-            toast({ title: "Deleted", description: "Resource deleted", variant: "default" })
-        })
-    }
+    const previewResource = (res) => {
+        if (res.type === 'link') window.open(res.content, '_blank');
+        else { setSelectedItem(res); setIsDetailModalOpen(true); }
+    };
 
-    const openResource = (res) => {
-        if (res.type === 'link') {
-            window.open(res.content, '_blank')
-        } else {
-            // For base64, usually opening in new window works
-            const win = window.open()
-            if (win) {
-                win.document.write('<iframe src="' + res.content + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
-            }
-        }
-    }
+    const getTypeIcon = (type) => {
+        if (type === 'link') return <LinkIcon size={16} />;
+        if (type === 'pdf') return <FileText size={16} />;
+        return <Image size={16} />;
+    };
 
     return (
-        <div style={{ padding: '2rem', background: 'white', borderRadius: '15px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h2 style={{ color: '#d91b5c' }}>Resource Manager</h2>
-                <button onClick={() => setIsAddModalOpen(true)} style={{ background: '#d91b5c', color: 'white', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '25px', cursor: 'pointer', fontWeight: 'bold' }}>
-                    + Add Resource
-                </button>
+        <div className="admin-view">
+            <div className="view-header">
+                <h2 className="view-title">Resource Manager</h2>
+                <button onClick={openAdd} className="btn-add-new"><Plus size={18} /> Add Resource</button>
             </div>
 
-            <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-                {resources.map(res => (
-                    <div key={res.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span style={{ fontSize: '1.5rem' }}>{res.type === 'link' ? '🔗' : (res.type === 'pdf' ? '📄' : '🖼️')}</span>
-                            <h4 style={{ margin: 0, flex: 1 }}>{res.name}</h4>
+            <div className="admin-list-container">
+                {resources.map(item => (
+                    <div key={item.id} className="list-row-card">
+                        <div className="row-content">
+                            <h3 className="row-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ color: 'var(--admin-primary)' }}>{getTypeIcon(item.type)}</span>
+                                {item.name}
+                            </h3>
+                            <p className="row-subtitle">{new Date(item.date).toLocaleDateString()} • {item.type.toUpperCase()}</p>
                         </div>
-                        <p style={{ fontSize: '0.8rem', color: '#666', margin: 0 }}>{new Date(res.date).toLocaleDateString()}</p>
-
-                        <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
-                            <button onClick={() => openResource(res)} style={{ flex: 1, padding: '0.5rem', background: '#f0f0f0', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>View</button>
-                            <button onClick={() => handleDelete(res.id)} style={{ padding: '0.5rem', background: '#ffebee', color: 'red', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
+                        <div className="row-actions">
+                            <button onClick={() => previewResource(item)} className="action-btn view" title={item.type === 'link' ? "Open Link" : "Preview"}><Eye size={18} /></button>
+                            <button onClick={() => openEdit(item)} className="action-btn edit"><Edit size={18} /></button>
+                            <button onClick={() => handleDelete(item.id)} className="action-btn delete"><Trash2 size={18} /></button>
                         </div>
                     </div>
                 ))}
+                {resources.length === 0 && <p className="empty-state">No resources found.</p>}
             </div>
 
-            {/* ADD MODAL */}
-            {isAddModalOpen && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-                    <div style={{ background: 'white', padding: '2rem', borderRadius: '15px', width: '90%', maxWidth: '500px' }}>
-                        <h3>Add New Resource</h3>
+            <AdminModal isOpen={isFormModalOpen} onClose={() => setIsFormModalOpen(false)} title={isEditing ? "Edit Resource" : "Add Resource"}>
+                <form onSubmit={handleSubmit}>
+                    <AdminInput label="Resource Name" name="name" value={formData.name} onChange={handleInputChange} required />
+                    <AdminSelect label="Type" name="type" value={formData.type} onChange={handleTypeChange}
+                        options={[{ value: 'link', label: 'External Link' }, { value: 'pdf', label: 'PDF Document' }, { value: 'image', label: 'Image File' }]} />
 
+                    {formData.type === 'link' ? (
+                        <AdminInput label="URL" name="content" value={formData.content} onChange={handleInputChange} placeholder="https://..." required />
+                    ) : (
                         <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Name</label>
-                            <input
-                                value={newResource.name}
-                                onChange={e => setNewResource({ ...newResource, name: e.target.value })}
-                                style={{ width: '100%', padding: '0.8rem', borderRadius: '5px', border: '1px solid #ddd' }}
-                                placeholder="Resource Name"
-                            />
+                            <AdminFile label={formData.type === 'pdf' ? "PDF File (Max 2MB)" : "Image File (Max 2MB)"}
+                                accept={formData.type === 'pdf' ? "application/pdf" : "image/*"}
+                                onChange={handleFileChange} />
+                            {uploadError && <p style={{ color: 'var(--admin-danger)', fontSize: '0.8rem' }}>{uploadError}</p>}
+                            {isEditing && !formData.content.startsWith('data:') && <p style={{ fontSize: '0.8rem', color: 'var(--gray)' }}>Current file loaded.</p>}
                         </div>
+                    )}
 
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Type</label>
-                            <select
-                                value={newResource.type}
-                                onChange={e => setNewResource({ ...newResource, type: e.target.value, content: '' })}
-                                style={{ width: '100%', padding: '0.8rem', borderRadius: '5px', border: '1px solid #ddd' }}
-                            >
-                                <option value="link">External Link</option>
-                                <option value="pdf">PDF Document</option>
-                                <option value="image">Image</option>
-                            </select>
-                        </div>
+                    <button type="submit" className="admin-btn-primary" style={{ marginTop: '1.5rem' }}>{isEditing ? "Update" : "Create"}</button>
+                </form>
+            </AdminModal>
 
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Content</label>
-                            {newResource.type === 'link' ? (
-                                <input
-                                    value={newResource.content}
-                                    onChange={e => setNewResource({ ...newResource, content: e.target.value })}
-                                    style={{ width: '100%', padding: '0.8rem', borderRadius: '5px', border: '1px solid #ddd' }}
-                                    placeholder="https://example.com"
-                                />
-                            ) : (
-                                <div>
-                                    <input
-                                        type="file"
-                                        accept={newResource.type === 'pdf' ? '.pdf' : 'image/*'}
-                                        onChange={handleFileChange}
-                                        style={{ width: '100%' }}
-                                    />
-                                    {uploadError && <p style={{ color: 'red', fontSize: '0.8rem' }}>{uploadError}</p>}
-                                </div>
-                            )}
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button onClick={() => setIsAddModalOpen(false)} style={{ padding: '0.8rem 1.5rem', border: 'none', background: '#f0f0f0', borderRadius: '5px', cursor: 'pointer' }}>Cancel</button>
-                            <button onClick={handleAdd} style={{ padding: '0.8rem 1.5rem', border: 'none', background: '#d91b5c', color: 'white', borderRadius: '5px', cursor: 'pointer' }}>Add Resource</button>
-                        </div>
+            <AdminModal isOpen={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)} title="Preview Resource" size="large">
+                {selectedItem && (
+                    <div className="detail-view" style={{ height: '60vh' }}>
+                        {selectedItem.type === 'image' ? (
+                            <img src={selectedItem.content} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        ) : (
+                            <iframe src={selectedItem.content} title="Preview" style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
+                        )}
                     </div>
-                </div>
-            )}
-
-            {/* ALERT DIALOG */}
-            <AlertDialog open={alertConfig.open} onOpenChange={(open) => setAlertConfig(prev => ({ ...prev, open }))}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>{alertConfig.title}</AlertDialogTitle>
-                        <AlertDialogDescription>{alertConfig.description}</AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleConfirmAction}>Confirm</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+                )}
+            </AdminModal>
         </div>
-    )
-}
+    );
+};
 
-export default ResourceManager
+export default ResourceManager;

@@ -56,99 +56,12 @@ const INITIAL_SUPPORT = [
         date: '2023-12-01'
     }
 ]
-const INITIAL_GALLERY = [
-    {
-        id: '1',
-        eventName: 'Installation Ceremony',
-        image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        orientation: 'landscape'
-    },
-    {
-        id: '2',
-        eventName: 'Tree Plantation',
-        image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb7d5763?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        orientation: 'portrait'
-    },
-    {
-        id: '3',
-        eventName: 'Blood Donation Camp',
-        image: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        orientation: 'portrait'
-    },
-    {
-        id: '4',
-        eventName: 'School Visit',
-        image: 'https://images.unsplash.com/photo-1427504494785-3a9ca28497b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        orientation: 'landscape'
-    },
-    {
-        id: '5',
-        eventName: 'Charity Run',
-        image: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        orientation: 'portrait'
-    }
-]
-const INITIAL_EVENTS = [
-    {
-        id: '1',
-        title: "Community Health Camp",
-        description: "Free health checkup and medical consultation for underprivileged communities",
-        date: "2023-12-15",
-        category: "Healthcare",
-        poster: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        images: [
-            "https://images.unsplash.com/photo-1579684385760-d977b39abd87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1584515933487-9bdbb0043bf3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-        ]
-    },
-    {
-        id: '2',
-        title: "Environmental Cleanup Drive",
-        description: "Join us in cleaning our local parks and planting trees for a greener tomorrow",
-        date: "2023-12-22",
-        category: "Environment",
-        poster: "https://images.unsplash.com/photo-1562684759-f5291d656797?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        images: [
-            "https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-        ]
-    },
-    {
-        id: '3',
-        title: "Education Support Program",
-        description: "Providing school supplies and mentorship to students from low-income families",
-        date: "2024-01-05",
-        category: "Education",
-        poster: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        images: []
-    }
-]
+const INITIAL_GALLERY = []
+const INITIAL_EVENTS = []
 
-const INITIAL_BULLETINS = [
-    {
-        id: '1',
-        title: "The Rotaractor - Vol 1",
-        month: "July 2023",
-        poster: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" // Sample PDF
-    },
-    {
-        id: '2',
-        title: "The Rotaractor - Vol 2",
-        month: "August 2023",
-        poster: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf"
-    }
-]
+const INITIAL_BULLETINS = []
 
-const INITIAL_SCRAPBOOKS = [
-    {
-        id: '1',
-        title: "Installation Ceremony 2023",
-        date: "July 2023",
-        poster: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-        pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf" // Sample PDF
-    }
-]
+const INITIAL_SCRAPBOOKS = []
 
 const INITIAL_USERS = [
     {
@@ -412,9 +325,22 @@ export const mockDataService = {
         // Or just ensure 'admin' exists. 
         // Let's force update the admin user to ensure known credentials if it exists but is broken.
         const existingAdmin = users.find(u => u.username === 'admin');
-        if (existingAdmin && existingAdmin.password !== 'admin') {
-            console.log("Fixing corrupted admin user...");
-            await update(USER_KEY, existingAdmin.id, { password: 'admin', role: 'admin', status: 'active' });
+        if (existingAdmin) {
+            // Self-healing: if admin exists but has wrong role/status/password, fix it.
+            // This ensures meaningful access if data is corrupted.
+            const needsRepair = existingAdmin.password !== 'admin' || existingAdmin.role !== 'admin' || existingAdmin.status !== 'active';
+
+            if (needsRepair) {
+                console.log("Fixing corrupted admin user...");
+                await update(USER_KEY, existingAdmin.id, {
+                    password: 'admin',
+                    role: 'admin',
+                    status: 'active',
+                    isLocked: false
+                });
+                // Refresh list after update
+                users = await getAll(USER_KEY);
+            }
         }
 
         if (seedNeeded) {
@@ -650,7 +576,7 @@ export const mockDataService = {
     getResources: () => getAll(CLUB_RESOURCES_KEY),
     addResource: (resource) => add(CLUB_RESOURCES_KEY, { ...resource, date: new Date().toISOString() }),
     deleteResource: (id) => remove(CLUB_RESOURCES_KEY, id),
-    updateResource: (id, data) => update(CLUB_RESOURCES_KEY, { ...data, id }),
+    updateResource: (id, data) => update(CLUB_RESOURCES_KEY, id, data),
 
     // BOARD MEMBERS
     getBoardMembers: () => getAll(BOARD_MEMBERS_KEY),

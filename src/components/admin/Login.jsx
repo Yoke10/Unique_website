@@ -102,7 +102,7 @@ const Login = ({ onLogin }) => {
                             </span>
                         </div>
 
-                        <button className="btn animation" disabled={loading}>
+                        <button className="login-btn animation" disabled={loading}>
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
 
@@ -143,7 +143,7 @@ const Login = ({ onLogin }) => {
                             </span>
                         </div>
 
-                        <button className="btn animation" disabled={loading}>
+                        <button className="login-btn animation" disabled={loading}>
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
 
