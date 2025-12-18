@@ -17,6 +17,9 @@ const BulletinView = () => {
 
     const [formData, setFormData] = useState({ title: '', month: '', poster: '', pdfUrl: '' });
 
+    const [filesToUpload, setFilesToUpload] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     useEffect(() => { loadBulletins(); }, []);
 
     const loadBulletins = async () => {
@@ -28,17 +31,36 @@ const BulletinView = () => {
     const handleFileChange = async (e, field, type) => {
         const file = e.target.files[0];
         if (!file) return;
-        if (!validateFile(file, type).valid) return;
-        try {
-            const base64 = await fileToBase64(file);
-            setFormData(prev => ({ ...prev, [field]: base64 }));
-        } catch { }
+        if (!validateFile(file, type).valid) {
+            toast({ title: "Invalid File", description: `Please select a valid ${type} file.`, variant: "destructive" });
+            return;
+        }
+
+        // Store raw file for upload
+        setFilesToUpload(prev => ({ ...prev, [field]: file }));
+
+        // For preview purposes on images, we can still use a temp URL or base64
+        if (type === 'image') {
+            try {
+                const base64 = await fileToBase64(file);
+                setFormData(prev => ({ ...prev, [field]: base64 }));
+            } catch { }
+        } else {
+            // For PDF, just show the name or keep existing URL if editing
+            setFormData(prev => ({ ...prev, [field]: file.name })); // Optional visual feedback
+        }
     };
 
-    const openAdd = () => { setFormData({ title: '', month: '', poster: '', pdfUrl: '' }); setIsEditing(false); setIsFormModalOpen(true); };
+    const openAdd = () => {
+        setFormData({ title: '', month: '', poster: '', pdfUrl: '' });
+        setFilesToUpload({});
+        setIsEditing(false);
+        setIsFormModalOpen(true);
+    };
 
     const openEdit = (item) => {
         setFormData({ ...item });
+        setFilesToUpload({});
         setSelectedItem(item);
         setIsEditing(true);
         setIsFormModalOpen(true);
@@ -46,13 +68,35 @@ const BulletinView = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try {
-            if (isEditing) await firebaseService.updateBulletin(selectedItem.id, formData);
-            else await firebaseService.addBulletin(formData);
-            toast({ title: "Success", description: "Saved successfully", variant: "success" });
+            let updatedData = { ...formData };
+
+            // Upload files if any
+            if (Object.keys(filesToUpload).length > 0) {
+                toast({ title: "Uploading...", description: "Please wait while files are being uploaded." });
+
+                for (const [key, file] of Object.entries(filesToUpload)) {
+                    if (file) {
+                        const path = `bulletins/${Date.now()}_${file.name}`;
+                        const url = await firebaseService.uploadFile(file, path);
+                        updatedData[key] = url;
+                    }
+                }
+            }
+
+            if (isEditing) await firebaseService.updateBulletin(selectedItem.id, updatedData);
+            else await firebaseService.addBulletin(updatedData);
+
+            toast({ title: "Success", description: "Bulletin saved successfully", variant: "success" });
             setIsFormModalOpen(false);
             loadBulletins();
-        } catch { toast({ title: "Error", variant: "destructive" }); }
+        } catch (error) {
+            console.error(error);
+            toast({ title: "Error", description: "Failed to save bulletin.", variant: "destructive" });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleDelete = async (id) => {
@@ -92,7 +136,9 @@ const BulletinView = () => {
                     <AdminFile label="Cover Image" accept="image/webp" onChange={(e) => handleFileChange(e, 'poster', 'image')} />
                     <AdminFile label="PDF File" accept="application/pdf" onChange={(e) => handleFileChange(e, 'pdfUrl', 'pdf')} />
                     <AdminInput name="pdfUrl" value={formData.pdfUrl} onChange={handleInputChange} placeholder="Or PDF URL" />
-                    <button type="submit" className="admin-btn-primary" style={{ marginTop: '1.5rem' }}>{isEditing ? "Update" : "Create"}</button>
+                    <button type="submit" className="admin-btn-primary" style={{ marginTop: '1.5rem' }} disabled={isSubmitting}>
+                        {isSubmitting ? "Uploading..." : (isEditing ? "Update" : "Create")}
+                    </button>
                 </form>
             </AdminModal>
 

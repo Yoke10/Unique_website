@@ -75,6 +75,23 @@ export const firebaseService = {
 
         if (!snap.exists()) {
             console.warn("User document not found in Firestore:", uid);
+
+            // Fallback: Check if the request is for the currently logged-in user
+            const currentUser = auth.currentUser;
+            if (currentUser && currentUser.uid === uid) {
+                console.log("Returning fallback user from Auth state");
+                return {
+                    id: uid,
+                    email: currentUser.email,
+                    username: currentUser.email ? currentUser.email.split('@')[0] : 'User',
+                    role: 'member', // Default safety role
+                    profile: {
+                        fullName: currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'Unknown User'),
+                        email: currentUser.email
+                    }
+                };
+            }
+
             return null;
         }
 
