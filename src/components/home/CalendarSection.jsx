@@ -60,9 +60,9 @@ const AREA_OF_FOCUS = {
 
 // Fixed Rotary/Rotaract Days (Static for now, can be moved to DB)
 const FIXED_IMPORTANT_DAYS = [
-    { month: 2, day: 13, title: "World Rotaract Day", type: "rotary" }, // March 13 (Month is 0-indexed in JS Date)
-    { month: 1, day: 23, title: "World Understanding and Peace Day", type: "rotary" }, // Feb 23
-    { month: 9, day: 24, title: "World Polio Day", type: "rotary" } // Oct 24
+    { month: 2, day: 13, title: "World Rotaract Day" }, // March 13 (Month is 0-indexed in JS Date)
+    { month: 1, day: 23, title: "World Understanding and Peace Day" }, // Feb 23
+    { month: 9, day: 24, title: "World Polio Day" } // Oct 24
 ];
 
 const CalendarSection = () => {
