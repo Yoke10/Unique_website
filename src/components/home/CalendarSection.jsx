@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { firebaseService } from '../../services/firebaseService';
+import { MousePointerClick } from 'lucide-react';
 import './CalendarSection.css';
 
 // Rotary Areas of Focus Logic
@@ -197,7 +198,7 @@ const CalendarSection = () => {
             const isSelected = type === 'current' && day === selectedDate.getDate() && month === selectedDate.getMonth() && year === selectedDate.getFullYear();
 
             // Prepare Tooltip Content
-            const tooltipText = dayEvents.map(e => `${e.title}${e.description ? ': ' + e.description : ''}`).join('\n');
+            const tooltipText = dayEvents.map(e => e.title).join('\n');
 
             return (
                 <div
@@ -206,7 +207,7 @@ const CalendarSection = () => {
                     onClick={() => {
                         if (type === 'current') handleDateClick(day);
                     }}
-                    title={tooltipText} // Native fallback
+
                 >
                     <span className="ui2-cell-date-num">{day}</span>
                     {dayEvents.slice(0, 3).map((evt, idx) => (
@@ -221,7 +222,7 @@ const CalendarSection = () => {
                             {dayEvents.map((evt, i) => (
                                 <div key={i} className="ui2-tooltip-item">
                                     <strong>{evt.title}</strong>
-                                    {evt.description && <span className="tooltip-desc">{evt.description}</span>}
+                                    {/*evt.description && <span className="tooltip-desc">{evt.description}</span>*/}
                                 </div>
                             ))}
                         </div>
@@ -254,46 +255,52 @@ const CalendarSection = () => {
 
                 {/* --- UI 1: Widget (Left) --- */}
                 {/* --- UI 1: Widget (Left) --- */}
-                <div className="cs-widget-container" onMouseEnter={() => { }} onClick={() => setIsModalOpen(true)}>
-                    <div className="signboard outer">
-                        <div className="signboard front inner anim04c">
-                            <div className="year anim04c">
-                                <span>{widgetYear}</span>
-                            </div>
-                            <ul className="calendarMain anim04c">
-                                <span className="month anim04c">
-                                    <span>{widgetMonth}</span>
-                                </span>
-                                <span className="date anim04c">
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="cs-widget-container" onMouseEnter={() => { }} onClick={() => setIsModalOpen(true)}>
+                        <div className="signboard outer">
+                            <div className="signboard front inner anim04c">
+                                <div className="year anim04c">
+                                    <span>{widgetYear}</span>
+                                </div>
+                                <ul className="calendarMain anim04c">
+                                    <span className="month anim04c">
+                                        <span>{widgetMonth}</span>
+                                    </span>
+                                    <span className="date anim04c">
+                                        <span>{widgetDate}</span>
+                                    </span>
+                                    <span className="day anim04c">
+                                        <span>{widgetDay}</span>
+                                    </span>
+                                </ul>
+                                <div className="clock minute anim04c">
+                                    <span>{time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}</span>
+                                </div>
+                                <div className="calendarNormal date2 anim04c">
                                     <span>{widgetDate}</span>
-                                </span>
-                                <span className="day anim04c">
+                                </div>
+                            </div>
+                            <div className="signboard left inner anim04c">
+                                <div className="clock hour anim04c">
+                                    <span>{time.getHours() < 10 ? '0' + time.getHours() : time.getHours()}</span>
+                                </div>
+                                <div className="calendarNormal day2 anim04c">
                                     <span>{widgetDay}</span>
-                                </span>
-                            </ul>
-                            <div className="clock minute anim04c">
-                                <span>{time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}</span>
+                                </div>
                             </div>
-                            <div className="calendarNormal date2 anim04c">
-                                <span>{widgetDate}</span>
-                            </div>
-                        </div>
-                        <div className="signboard left inner anim04c">
-                            <div className="clock hour anim04c">
-                                <span>{time.getHours() < 10 ? '0' + time.getHours() : time.getHours()}</span>
-                            </div>
-                            <div className="calendarNormal day2 anim04c">
-                                <span>{widgetDay}</span>
+                            <div className="signboard right inner anim04c">
+                                <div className="clock second anim04c">
+                                    <span>{time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()}</span>
+                                </div>
+                                <div className="calendarNormal month2 anim04c">
+                                    <span>{widgetMonth}</span>
+                                </div>
                             </div>
                         </div>
-                        <div className="signboard right inner anim04c">
-                            <div className="clock second anim04c">
-                                <span>{time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()}</span>
-                            </div>
-                            <div className="calendarNormal month2 anim04c">
-                                <span>{widgetMonth}</span>
-                            </div>
-                        </div>
+                    </div>
+                    <div className="cs-click-hint">
+                        <MousePointerClick size={16} />
+                        <span>Click to View Calendar</span>
                     </div>
                 </div>
 
