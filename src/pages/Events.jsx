@@ -3,13 +3,14 @@ import EventCard from '../components/events/EventCard'
 import Loading from '../components/common/Loading'
 import { firebaseService } from '../services/firebaseService'
 import { useQuery } from '@tanstack/react-query'
+import './Events.css'
 
 const Events = () => {
     // TanStack Query Hook
     const { data: events = [], isLoading: loading } = useQuery({
         queryKey: ['events'],
         queryFn: firebaseService.getEvents,
-        staleTime: 5 * 60 * 1000, // 5 minutes default
+        staleTime: 5 * 60 * 1000, // 5 minutes default,
     })
 
     useEffect(() => {
@@ -17,24 +18,16 @@ const Events = () => {
     }, [])
 
     return (
-        <div className="events-page" style={{ marginTop: '80px', padding: '2rem 5%', minHeight: '80vh', background: '#fdfbfd' }}>
-            <h1 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                fontWeight: '900',
-                textAlign: 'center',
-                marginBottom: '3rem',
-                background: 'var(--gradient-primary)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-            }}>
+        <div className="events-page">
+            <h1 className="events-page-title">
                 Upcoming Events
             </h1>
 
-            <div className="events-list-container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div className="events-list-container">
                 {loading ? (
-                    <Loading fullScreen={false} />
+                    <div className="loading-container">
+                        <Loading fullScreen={false} />
+                    </div>
                 ) : events.length > 0 ? (
                     events.map((event, index) => (
                         <EventCard
@@ -45,9 +38,11 @@ const Events = () => {
                         />
                     ))
                 ) : (
-                    <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'var(--dark-gray)' }}>
-                        No upcoming events at the moment. Stay tuned!
-                    </p>
+                    <div className="empty-state">
+                        <p className="empty-state-text">
+                            No upcoming events at the moment. Stay tuned!
+                        </p>
+                    </div>
                 )}
             </div>
         </div>

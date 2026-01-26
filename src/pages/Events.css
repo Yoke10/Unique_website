@@ -1,0 +1,70 @@
+/* Events Page Styles */
+.events-page {
+    margin-top: 80px;
+    padding: 3rem 5%;
+    min-height: 80vh;
+    background: #fdfbfd;
+}
+
+.events-page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Grid Layout for Events - Pinterest/Masonry Style */
+.events-list-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+    .events-list-container {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .events-list-container {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .events-list-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .events-page {
+        padding: 2rem 3%;
+    }
+}
+
+/* Loading and Empty State */
+.events-list-container .loading-container,
+.events-list-container .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.empty-state-text {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--dark-gray);
+    padding: 3rem 0;
+}
