@@ -1,99 +1,286 @@
+/* ================= CLUB DESCRIPTION SECTION BASE ================= */
 .club-description-section {
-    padding: var(--spacing-xl) 5%;
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-    background-color: #fff;
-    overflow: hidden;
-    min-height: 60vh;
+    background: var(--off-white);
+    padding: var(--spacing-xl) 0;
 }
 
-.club-description-section .description-content {
+/* ================= MAIN LAYOUT ================= */
+.description-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 90px;
+    padding: var(--spacing-lg) 0;
+}
+
+/* ================= CONTENT SECTION (LEFT) ================= */
+.description-content {
+    max-width: 650px;
     flex: 1;
 }
 
-.club-description-section .description-title {
+.description-content h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: 26px;
+    color: var(--primary-purple);
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    color: var(--primary-magenta);
 }
 
-.club-description-section .description-text {
-    font-size: 1.1rem;
-    line-height: 1.8;
+.description-content p {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.85;
     color: var(--dark-gray);
-    margin-bottom: 1.5rem;
+    margin-bottom: 18px;
     text-align: justify;
 }
 
-.club-description-section .history-images-container {
-    flex: 1;
+/* ================= COLLAGE CONTAINER (RIGHT) ================= */
+.collage {
+    position: relative;
+    width: 400px;
+    min-width: 400px;
+    height: 480px;
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1500px;
-    padding: 2rem;
+    flex-shrink: 0;
 }
 
-.club-description-section .interactive-card-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 650px;
-    border-radius: 20px;
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.2),
-        0 0 0 1px rgba(255, 255, 255, 0.5);
-    background: #fff;
-    padding: 10px;
-    /* Border/Frame size */
-    transform-style: preserve-3d;
+/* ================= PURPLE CENTER RECTANGLE ================= */
+.purple-panel {
+    position: absolute;
+    width: 220px;
+    height: 540px;
+    /* extends above & below images */
+    background: var(--primary-purple);
+    border-radius: 18px;
+    z-index: 0;
+}
+
+/* ================= IMAGE WRAPPER ================= */
+.photo {
+    position: absolute;
+    overflow: hidden;
+    /* required for asymmetric edges */
+    background: var(--light-gray);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.14);
+    z-index: 2;
+
+    /* hover transition */
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
     cursor: pointer;
 }
 
-.club-description-section .interactive-card-inner {
-    position: relative;
-    width: 100%;
-    border-radius: 15px;
-    overflow: hidden;
-    transform: translateZ(20px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.club-description-section .interactive-card-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transform: scale(1.01);
-    /* Prevent pixel gaps */
-}
-
-/* Shine effect overlay */
-.club-description-section .card-shine {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* actual image */
+.photo img {
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 10;
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent);
-    mix-blend-mode: overlay;
+    object-fit: cover;
+    /* ensures images fill the container */
+    object-position: center;
+    display: block;
 }
 
+/* ================= IMAGE HOVER ================= */
+.photo:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 26px 46px rgba(0, 0, 0, 0.22);
+    z-index: 5;
+    /* brings hovered image on top */
+}
+
+/* ================= IMAGE POSITIONS ================= */
+
+/* ---------- TOP LEFT ---------- */
+/* sharp edge on RIGHT (towards center) */
+.photo.tl {
+    width: 200px;
+    height: 170px;
+    top: 65px;
+    left: 0;
+    border-radius: 30px 10px 0px 30px;
+}
+
+/* ---------- BOTTOM LEFT ---------- */
+/* sharp edge on RIGHT (towards center) */
+.photo.bl {
+    width: 200px;
+    height: 150px;
+    bottom: 65px;
+    left: 0;
+    border-radius: 30px 0px 10px 30px;
+}
+
+/* ---------- TOP RIGHT ---------- */
+/* sharp edge on LEFT (towards center) */
+.photo.tr {
+    width: 185px;
+    height: 240px;
+    top: 30px;
+    right: 0;
+    border-radius: 10px 30px 30px 0px;
+}
+
+/* ---------- BOTTOM RIGHT ---------- */
+/* sharp edge on LEFT (towards center) */
+.photo.br {
+    width: 185px;
+    height: 150px;
+    bottom: 30px;
+    right: 0;
+    border-radius: 0px 30px 30px 10px;
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+/* Laptop (≤1024px) */
 @media (max-width: 1024px) {
-    .club-description-section {
+    .description-wrapper {
+        gap: 60px;
+    }
+
+    .collage {
+        width: 400px;
+        min-width: 400px;
+        height: 480px;
+    }
+
+    .purple-panel {
+        width: 220px;
+        height: 540px;
+    }
+
+    .photo.tl {
+        width: 200px;
+        height: 170px;
+        top: 70px;
+    }
+
+    .photo.bl {
+        width: 200px;
+        height: 150px;
+        bottom: 70px;
+    }
+
+    .photo.tr {
+        width: 180px;
+        height: 240px;
+        top: 30px;
+    }
+
+    .photo.br {
+        width: 180px;
+        height: 150px;
+        bottom: 30px;
+    }
+
+    .description-content {
+        max-width: 550px;
+    }
+}
+
+/* Tablet (≤768px) */
+@media (max-width: 768px) {
+    .description-wrapper {
         flex-direction: column;
-        gap: 3rem;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-md) 0;
     }
 
-    .club-description-section .history-images-container {
+    .collage {
         width: 100%;
-        padding: 0;
+        min-width: unset;
+        max-width: 450px;
+        height: 500px;
+        margin: 0 auto;
+        order: -1;
+        /* Move collage above content on mobile */
     }
 
-    .club-description-section .interactive-card-wrapper {
+    .purple-panel {
+        width: 240px;
+        height: 560px;
+    }
+
+    .photo.tl {
+        width: 220px;
+        height: 180px;
+        top: 75px;
+    }
+
+    .photo.bl {
+        width: 220px;
+        height: 160px;
+        bottom: 75px;
+    }
+
+    .photo.tr {
+        width: 200px;
+        height: 260px;
+        top: 35px;
+    }
+
+    .photo.br {
+        width: 200px;
+        height: 160px;
+        bottom: 35px;
+    }
+
+    .description-content {
         max-width: 100%;
+        text-align: center;
+    }
+
+    .description-content p {
+        text-align: center;
+    }
+}
+
+/* Mobile (≤425px) */
+@media (max-width: 425px) {
+    .collage {
+        max-width: 100%;
+        height: 400px;
+    }
+
+    .purple-panel {
+        width: 180px;
+        height: 460px;
+    }
+
+    .photo.tl {
+        width: 160px;
+        height: 140px;
+        top: 60px;
+    }
+
+    .photo.bl {
+        width: 160px;
+        height: 120px;
+        bottom: 60px;
+    }
+
+    .photo.tr {
+        width: 150px;
+        height: 200px;
+        top: 25px;
+    }
+
+    .photo.br {
+        width: 150px;
+        height: 120px;
+        bottom: 25px;
+    }
+
+    .description-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .description-content p {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
     }
 }

@@ -1,169 +1,321 @@
+/* ================= ABOUT SECTION BASE ================= */
 .about-section {
     background: var(--off-white);
 }
 
-.about-section .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
+/* ================= MAIN LAYOUT ================= */
+.about-wrapper {
+    display: flex;
     align-items: center;
+    gap: 90px;
+    padding: var(--spacing-lg) 0;
 }
 
-
-.about-section .about-content {
-    animation: slideInLeft 0.8s ease;
-    padding-right: var(--spacing-md);
-}
-
-.about-section .about-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 800;
-    margin-bottom: var(--spacing-lg);
+/* ================= COLLAGE CONTAINER ================= */
+.collage {
     position: relative;
-    display: inline-block;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    width: 400px;
+    min-width: 400px;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
 }
 
-.about-section .about-title::after {
-    content: '';
+/* ================= PURPLE CENTER RECTANGLE ================= */
+.purple-panel {
     position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 40%;
-    height: 6px;
-    background: var(--gradient-primary);
-    border-radius: var(--radius-full);
+    width: 220px;
+    height: 540px;
+    /* extends above & below images */
+    background: var(--primary-purple);
+    border-radius: 18px;
+    z-index: 0;
 }
 
-.about-section .about-text {
-    font-size: 1.15rem;
-    margin-bottom: var(--spacing-md);
+/* ================= IMAGE WRAPPER ================= */
+.photo {
+    position: absolute;
+    overflow: hidden;
+    /* required for asymmetric edges */
+    background: var(--light-gray);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.14);
+    z-index: 2;
+
+    /* hover transition */
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+    cursor: pointer;
+}
+
+/* actual image */
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* ensures images fill the container */
+    object-position: center;
+    display: block;
+}
+
+/* ================= IMAGE HOVER ================= */
+.photo:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 26px 46px rgba(0, 0, 0, 0.22);
+    z-index: 5;
+    /* brings hovered image on top */
+}
+
+/* ================= IMAGE POSITIONS ================= */
+
+/* ---------- TOP LEFT ---------- */
+/* sharp edge on RIGHT (towards center) */
+.photo.tl {
+    width: 200px;
+    height: 180px;
+    top: 65px;
+    left: 0;
+    border-radius: 30px 10px 0px 30px;
+}
+
+/* ---------- BOTTOM LEFT ---------- */
+/* sharp edge on RIGHT (towards center) */
+.photo.bl {
+    width: 200px;
+    height: 150px;
+    bottom: 65px;
+    left: 0;
+    border-radius: 30px 0px 10px 30px;
+}
+
+/* ---------- TOP RIGHT ---------- */
+/* sharp edge on LEFT (towards center) */
+.photo.tr {
+    width: 185px;
+    height: 240px;
+    top: 30px;
+    right: 0;
+    border-radius: 10px 30px 30px 0px;
+}
+
+/* ---------- BOTTOM RIGHT ---------- */
+/* sharp edge on LEFT (towards center) */
+.photo.br {
+    width: 185px;
+    height: 150px;
+    bottom: 30px;
+    right: 0;
+    border-radius: 0px 30px 30px 10px;
+}
+
+/* ================= CONTENT SECTION ================= */
+.about-content {
+    max-width: 650px;
+    flex: 1;
+}
+
+.about-content h2 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: 26px;
+    color: var(--primary-purple);
+    font-family: var(--font-display);
+}
+
+.about-content p {
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.85;
     color: var(--dark-gray);
-    line-height: 1.8;
+    margin-bottom: 18px;
     text-align: justify;
 }
 
-.about-section .about-content .btn {
-    margin-top: var(--spacing-md);
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
-    /* Enforce styling to prevent conflicts */
-    position: relative;
-    z-index: 10;
-    display: inline-block;
-    width: fit-content;
+/* ================= BUTTON ================= */
+.about-content .btn {
+    margin-top: 32px;
+    padding: 15px 32px;
     background: var(--gradient-primary);
     color: var(--white);
     border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
     box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
 }
 
-.about-section .about-content .btn:hover {
+.about-content .btn:hover {
+    background: var(--gradient-secondary);
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
-/* 3D Image Effect */
-.about-section .about-image-container {
-    perspective: 1000px;
-    animation: slideInRight 0.8s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.about-content .btn span {
+    font-size: 18px;
+    transition: transform var(--transition-fast);
 }
 
-.about-section .image-3d-wrapper {
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
-    /* Faster transition for mouse follow */
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    max-width: 100%;
-    will-change: transform;
+.about-content .btn:hover span {
+    transform: translate(2px, -2px);
 }
 
-/* Remove CSS hover transform as it conflicts with JS */
-.about-section .image-3d-wrapper:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
+/* ================= RESPONSIVE DESIGN ================= */
 
-.about-section .image-3d-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    pointer-events: none;
-}
-
-.about-section .image-3d-wrapper:hover::before {
-    opacity: 1;
-}
-
-.about-section .image-placeholder {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: var(--white);
-    border-radius: var(--radius-lg);
-}
-
-.about-section .about-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: var(--radius-lg);
-}
-
-
-/* Responsive */
+/* Laptop (≤1024px) */
 @media (max-width: 1024px) {
-    .about-section .about-grid {
-        grid-template-columns: 1fr;
+    .about-wrapper {
+        gap: 60px;
+    }
+
+    .collage {
+        width: 400px;
+        min-width: 400px;
+        height: 480px;
+    }
+
+    .purple-panel {
+        width: 220px;
+        height: 540px;
+    }
+
+    .photo.tl {
+        width: 200px;
+        height: 170px;
+        top: 70px;
+    }
+
+    .photo.bl {
+        width: 200px;
+        height: 150px;
+        bottom: 70px;
+    }
+
+    .photo.tr {
+        width: 180px;
+        height: 240px;
+        top: 30px;
+    }
+
+    .photo.br {
+        width: 180px;
+        height: 150px;
+        bottom: 30px;
+    }
+
+    .about-content {
+        max-width: 550px;
+    }
+}
+
+/* Tablet (≤768px) */
+@media (max-width: 768px) {
+    .about-wrapper {
+        flex-direction: column;
         gap: var(--spacing-lg);
+        padding: var(--spacing-md) 0;
     }
 
-    .about-section .about-content {
-        padding-right: 0;
-        text-align: center;
-    }
-
-    .about-section .about-title::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .about-section .about-text {
-        text-align: center;
-    }
-
-    .about-section .about-image-container {
-        order: -1;
-        max-width: 80%;
+    .collage {
+        width: 100%;
+        min-width: unset;
+        max-width: 450px;
+        height: 500px;
         margin: 0 auto;
     }
+
+    .purple-panel {
+        width: 240px;
+        height: 560px;
+    }
+
+    .photo.tl {
+        width: 220px;
+        height: 180px;
+        top: 75px;
+    }
+
+    .photo.bl {
+        width: 220px;
+        height: 160px;
+        bottom: 75px;
+    }
+
+    .photo.tr {
+        width: 200px;
+        height: 260px;
+        top: 35px;
+    }
+
+    .photo.br {
+        width: 200px;
+        height: 160px;
+        bottom: 35px;
+    }
+
+    .about-content {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .about-content p {
+        text-align: center;
+    }
 }
 
+/* Mobile (≤425px) */
 @media (max-width: 425px) {
-    .about-section .about-title {
-        font-size: 2.2rem;
-    }
-
-    .about-section .about-title::after {
-        width: 60%;
-    }
-
-    .about-section .about-image-container {
+    .collage {
         max-width: 100%;
+        height: 400px;
+    }
+
+    .purple-panel {
+        width: 180px;
+        height: 460px;
+    }
+
+    .photo.tl {
+        width: 160px;
+        height: 140px;
+        top: 60px;
+    }
+
+    .photo.bl {
+        width: 160px;
+        height: 120px;
+        bottom: 60px;
+    }
+
+    .photo.tr {
+        width: 150px;
+        height: 200px;
+        top: 25px;
+    }
+
+    .photo.br {
+        width: 150px;
+        height: 120px;
+        bottom: 25px;
+    }
+
+    .about-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .about-content p {
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
+    .about-content .btn {
+        padding: 12px 28px;
+        font-size: 14px;
     }
 }
