@@ -2,7 +2,7 @@
 .prayer-test-section {
     background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-magenta) 100%);
     /* Dark purple theme background */
-    padding: 4rem 0;
+    padding: 3rem 0;
     font-family: var(--font-primary);
 }
 
@@ -17,24 +17,24 @@
 .prayer-test-section .section-main-title {
     width: 100%;
     text-align: center;
-    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
     font-weight: 800;
     color: var(--white);
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     font-family: var(--font-display);
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .prayer-test-section .box {
     position: relative;
-    width: 500px;
-    /* Increased to prevent text wrap */
-    height: 480px;
+    width: 420px;
+    /* Optimized size */
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 40px 30px;
-    /* Maintains 60px gap between cards */
+    margin: 50px 50px;
+    /* Increased gap between cards */
     transition: var(--transition-slow);
 }
 
@@ -160,7 +160,7 @@
 .prayer-test-section .box .content {
     position: relative;
     left: 0;
-    padding: 20px 40px;
+    padding: 18px 32px;
     background: rgba(255, 255, 255, 0.05);
     /* Keep transparency for glass effect */
     backdrop-filter: blur(10px);
@@ -170,7 +170,7 @@
     transition: var(--transition-slow);
     color: var(--white);
     height: auto;
-    min-height: 250px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -178,11 +178,11 @@
 
 .prayer-test-section .box:hover .content {
     left: -25px;
-    padding: 60px 40px;
+    padding: 50px 32px;
 }
 
 .prayer-test-section .card-title {
-    font-size: 2em;
+    font-size: 1.8em;
     color: var(--white);
     margin-bottom: 10px;
     text-transform: uppercase;
@@ -192,7 +192,7 @@
 
 .prayer-test-section .box .content p,
 .prayer-test-section .box .content li {
-    font-size: 1.1em;
+    font-size: 1em;
     margin-bottom: 10px;
     line-height: 1.4em;
     font-family: var(--font-primary);
@@ -215,10 +215,10 @@
 
     .prayer-test-section .box {
         width: 100%;
-        max-width: 400px;
-        /* Reduced for better mobile fit */
+        max-width: 360px;
+        /* Optimized for mobile */
         height: auto;
-        min-height: 400px;
+        min-height: 360px;
         margin: 20px 0;
     }
 

@@ -1,5 +1,5 @@
 .join-us-section {
-    padding: var(--spacing-xl) 0;
+    padding: 4rem 0;
     background: var(--background-light);
     /* Or white */
     color: var(--text-primary);
@@ -17,10 +17,10 @@
 .join-us-section .join-us-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xxl);
+    gap: 4rem;
     align-items: flex-start;
     /* Align to top */
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: 3rem;
 }
 
 /* Left Side Styling */
@@ -44,7 +44,7 @@
 
 .join-us-section .join-us-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: var(--spacing-md);
@@ -73,7 +73,7 @@
 .join-us-section .join-us-card {
     background: white;
     margin-top: 3rem;
-    padding: var(--spacing-xl);
+    padding: 3rem;
     border-radius: var(--radius-lg);
     /*box-shadow: 0 18px 40px rgba(255, 26, 140, 0.18);
     /*box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);*/
@@ -91,7 +91,7 @@
 
 .join-us-section .card-title {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--primary-purple);
     margin-bottom: var(--spacing-md);

@@ -1,6 +1,6 @@
 /* ================= CLUB DESCRIPTION SECTION BASE ================= */
 .club-description-section {
-    background: var(--off-white);
+    background: var(--white);
     padding: var(--spacing-xl) 0;
 }
 

@@ -2,7 +2,7 @@
 .calendar-section-wrapper {
     position: relative;
     width: 100%;
-    padding: 80px 0;
+    padding: 60px 0;
     font-family: var(--font-primary);
     background-color: var(--white);
     overflow: hidden;
@@ -13,17 +13,17 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 150px;
-    /* Increased gap as requested */
+    gap: 100px;
+    /* Optimized gap */
 }
 
 /* --- UI 1: WIDGET (Scaled Up & Themed) --- */
 
 .cs-widget-container {
     position: relative;
-    width: 350px;
-    /* Increased container size */
-    height: 350px;
+    width: 300px;
+    /* Optimized container size */
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,15 +40,15 @@
     z-index: 1;
     transform: translateY(0);
     cursor: pointer;
-    width: 130px;
-    /* Increased size from 100px */
-    height: 130px;
+    width: 115px;
+    /* Optimized size */
+    height: 115px;
 }
 
 .cs-widget-container .signboard {
-    width: 130px;
+    width: 115px;
     /* Match outer size */
-    height: 130px;
+    height: 115px;
     margin: auto;
     color: #fff;
     border-radius: 15px;
@@ -152,29 +152,35 @@
     top: 0;
     left: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .cs-widget-container .month,
 .cs-widget-container .day {
     display: block;
-    font-size: 13px;
-    /* Increased from 10px */
-    line-height: 40px;
-    /* Adjusted spacing */
+    font-size: 11px;
+    /* Optimized size */
+    line-height: 1.2;
+    /* Tighter line height */
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
+    margin: 0;
 }
 
 .cs-widget-container .date {
     display: block;
-    font-size: 50px;
-    /* Increased from 40px */
-    line-height: 50px;
-    /* Adjusted */
+    font-size: 44px;
+    /* Optimized from 50px */
+    line-height: 1;
+    /* Tight line height for centering */
     font-weight: 300;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 0;
+    margin: 8px 0;
 }
 
 .cs-widget-container .clock {
@@ -304,9 +310,9 @@
 
 .cs-modal-content {
     position: relative;
-    width: 1000px;
-    height: 650px;
-    /* FIXED HEIGHT */
+    width: 900px;
+    height: 600px;
+    /* Optimized height */
     max-width: 95vw;
     max-height: none;
     /* Disable max-height relative behavior */
@@ -326,9 +332,9 @@
 
 /* Ensure container allows grid to fill space */
 .ui2-calendar-base {
-    width: 700px;
-    height: 650px;
-    /* Fixed height as requested */
+    width: 630px;
+    height: 600px;
+    /* Optimized height */
     min-height: unset;
     border-radius: 0 20px 20px 0;
     background-color: var(--white);
@@ -344,8 +350,8 @@
 }
 
 .ui2-calendar-left {
-    width: 300px;
-    min-height: 650px;
+    width: 270px;
+    min-height: 600px;
     /* Match base */
     height: auto;
     border-radius: 20px 0px 0px 20px;

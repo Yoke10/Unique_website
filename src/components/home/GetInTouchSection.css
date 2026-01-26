@@ -3,14 +3,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: auto;
     background: var(--accent-dark-purple);
     font-family: var(--font-primary);
-    padding: var(--spacing-xl) var(--spacing-md);
+    padding: 4rem var(--spacing-md);
     position: relative;
     overflow: hidden;
-    /* Reduced scale factor */
-    --sz: clamp(8px, min(1.5vw, 2.5vh), 18px);
+    /* Optimized scale factor */
+    --sz: clamp(7px, min(1.3vw, 2vh), 16px);
 }
 
 .get-in-touch-section .section-title {
@@ -32,7 +32,7 @@
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    gap: 80px;
+    gap: 100px;
 }
 
 

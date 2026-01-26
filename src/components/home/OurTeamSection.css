@@ -1,13 +1,14 @@
 .team-section {
     background: var(--off-white);
+    padding: 3rem 0;
 }
 
 /* Grid Layout - Matches TeamGridSection */
 .team-section .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    padding: var(--spacing-sm) 0 var(--spacing-md);
+    gap: 2rem;
+    padding: 0;
     justify-content: center;
     max-width: 1000px;
     /* Limit width to keep 3 cards centered well */
@@ -30,7 +31,7 @@
 /* View More Button Container */
 .team-section .team-view-more {
     text-align: center;
-    margin-top: var(--spacing-md);
+    margin-top: 2rem;
 }
 
 /* Responsive */

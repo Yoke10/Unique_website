@@ -6,12 +6,12 @@
     position: relative;
     transition: transform 0.3s ease;
     text-align: center;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
     background: transparent;
     z-index: 1;
     /* Establish stacking context */
-    padding: 1.5rem;
-    /* Add padding so image is "inside" */
+    padding: 1.2rem;
+    /* Optimized padding */
 }
 
 /* White background */
@@ -59,7 +59,7 @@
     overflow: hidden;
     border-radius: 20px;
     /* Rounded square image */
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     box-shadow: 0 5px 15px rgba(64, 7, 99, 0.1);
 }
 
@@ -107,15 +107,15 @@
 }
 
 .team-member-card .member-info {
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
 }
 
 .team-member-card .member-name {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-magenta);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
 }
 
 .team-member-card .member-role {
